@@ -88,7 +88,7 @@ src/
 
 ### 設計フェーズ
 - architect、planner、spec-writerとUI/UX仕様確認
-- coder-backendとAPIコントラクト調整
+- backend-expertとAPIコントラクト調整
 - デザインシステムの定義
 
 ### 実装フェーズ

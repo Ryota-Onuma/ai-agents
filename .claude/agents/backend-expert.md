@@ -72,7 +72,7 @@
 ### 実装フェーズ
 - 小さく安全なコミット単位
 - 型安全性とエラーハンドリングを重視
-- coder-frontendとのAPI調整
+- frontend-expertとのAPI調整
 
 ### レビューフェーズ
 - reviewer、planner、spec-writer、architectによるレビュー

@@ -20,11 +20,11 @@
 - データベース移行計画（db-migration）
 
 ### 2. 実装フェーズ
-**参加エージェント**: coder-backend, coder-frontend, test-engineer
+**参加エージェント**: backend-expert, frontend-expert, test-engineer
 
 **協調パターン**:
-- **coder-backend**: SOLID原則厳守、Kotlin/Go優先、安全・小さなコミット
-- **coder-frontend**: SOLID原則厳守、React+TypeScript、アクセシビリティ重視
+- **backend-expert**: SOLID原則厳守、Kotlin/Go優先、安全・小さなコミット
+- **frontend-expert**: SOLID原則厳守、React+TypeScript、アクセシビリティ重視
 - **test-engineer**: TDD支援（t-wada方式）、テスト設計・実装
 
 **同期ポイント**:
@@ -90,7 +90,7 @@ blockers: ["阻害要因のリスト"]
 ## エラーハンドリング
 
 ### ブロッカー対応
-- 技術的制約: architect、coder-*が協調して解決策検討
+- 技術的制約: architect、backend-expert、frontend-expertが協調して解決策検討
 - 要件不明確: spec-writer、plannerが仕様明確化
 - 依存関係問題: planner主導で作業順序再調整
 

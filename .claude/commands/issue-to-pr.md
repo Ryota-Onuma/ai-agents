@@ -71,8 +71,8 @@ issue-to-pr <github_issue_url> --base <branch_name>
 ### Phase 2: 実装 (Parallel + Sequential)
 1. **pr-bot**: 新規ブランチ作成（`feature/issue-{number}-{description}`）
 2. **並列実装**:
-   - **coder-backend**: SOLID原則、Kotlin/Go、TDD実践
-   - **coder-frontend**: SOLID原則、React+TypeScript、アクセシビリティ
+   - **backend-expert**: SOLID原則、Kotlin/Go、TDD実践
+   - **frontend-expert**: SOLID原則、React+TypeScript、アクセシビリティ
    - **test-engineer**: t-wada方式TDD支援、テスト設計・実装
 
 ### Phase 3: レビュー (Approval Gate)
@@ -120,7 +120,7 @@ issue-to-pr <github_issue_url> --base <branch_name>
 
 - **技術仕様書** (spec-writer)
 - **アーキテクチャ設計書** (architect)
-- **実装済みコード** (coder-backend, coder-frontend)
+- **実装済みコード** (backend-expert, frontend-expert)
 - **テストスイート** (test-engineer)
 - **データベース移行スクリプト** (db-migration)
 - **レビュー報告書** (reviewer)
@@ -141,8 +141,8 @@ issue-to-pr <github_issue_url> --base <branch_name>
 - `.claude/agents/architect.md`
 - `.claude/agents/db-migration.md`
 - `.claude/agents/pr-bot.md`
-- `.claude/agents/coder-backend.md`
-- `.claude/agents/coder-frontend.md`
+- `.claude/agents/backend-expert.md`
+- `.claude/agents/frontend-expert.md`
 - `.claude/agents/test-engineer.md`
 - `.claude/agents/reviewer.md`
 
@@ -160,7 +160,7 @@ phases:
     execution: sequential
 
   implementation:
-    agents: [pr-bot, coder-backend, coder-frontend, test-engineer]
+    agents: [pr-bot, backend-expert, frontend-expert, test-engineer]
     execution: mixed  # pr-bot sequential, others parallel
 
   review:
