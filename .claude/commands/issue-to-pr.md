@@ -47,7 +47,7 @@ GitHub Issue から PR 作成まで全自動化されたワークフローコマ
 
 ## 使用方法
 
-```bash
+````bash
 # 基本使用（main branchベース）
 issue-to-pr <github_issue_url>
 
@@ -78,27 +78,41 @@ issue-to-pr <github_issue_url> --base <branch_name>
 1. **architect-impact**: 既存システム影響調査
 2. **並列**: architect-product（プロダクト観点設計）、architect-tech（技術観点設計）
 3. **chief-architect + architect-impact**: 統合・最終化 → design.md
-4. **db-migration**: スキーマ変更設計、移行戦略策定
+   - **architect-tech**: DB マイグレーション戦略も設計書に含める
 
-### Phase 2: 実装 (Parallel)
-1. **並列実装・テスト一体チーム** (実装とテストの一体化):
-   - **backend-expert**: 
-     - **Capabilities**: backend-development, backend-architecture, technical-architecture, backend-testing, tdd-methodology, solid-principles
-     - **実装範囲**: バックエンド実装 + ユニット/統合/API/DB/セキュリティテスト
+### Phase 2: 実装計画 (Sequential)
+1. **implementation-planner**: planning結果から依存関係を考慮した実装TODOリスト作成
+   - requirements.md と design.md を分析
+   - タスク分解と依存関係特定
+   - 各タスクへの最適エージェント割り当て
+   - 実装順序決定と並列実行可能性判定
+   - 成果物: `.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
+   - 進捗管理用チェックリスト: `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
+
+### Phase 3: 実装 (Parallel with Progress Tracking)
+1. **implementation-tracker**: 進捗管理・タスク完了確認
+   - 各エージェントからの完了報告受信
+   - 進捗チェックリスト更新（マークダウンファイル）
+   - 依存関係チェックと次タスク判定
+   - ブロッカー管理と解決策提案
+
+2. **並列実装・テスト一体チーム** (実装とテストの一体化):
+   - **backend-expert**:
+     - **Capabilities**: backend-development, backend-architecture, technical-architecture, backend-testing, database-migration, tdd-methodology, solid-principles
+     - **実装範囲**: バックエンド実装 + DB マイグレーション + ユニット/統合/API/DB/セキュリティテスト
      - **品質基準**: TDD (t-wada 方式)、SOLID 原則、カバレッジ ≥ 85%
-   - **frontend-expert**: 
+   - **frontend-expert**:
      - **Capabilities**: frontend-development, frontend-architecture, product-architecture, frontend-testing, tdd-methodology, solid-principles
      - **実装範囲**: フロントエンド実装 + ユニット/統合/UI/UX/アクセシビリティテスト
      - **品質基準**: TDD (t-wada 方式)、SOLID 原則、React+TypeScript、カバレッジ ≥ 80%
 
-### Phase 3: レビュー (Approval Gate)
+### Phase 4: レビュー (Approval Gate)
 **全員承認必須** - 1つでもNGがあればPR作成停止
 1. **reviewer**: コード品質、規約、命名、複雑度
 2. **chief-product-owner**: 要件充足性、requirements.md整合性
-3. **chief-architect**: アーキテクチャ整合性、design.md準拠
-4. **db-migration**: スキーマ変更安全性、移行計画整合性
+3. **chief-architect**: アーキテクチャ整合性、design.md準拠、DB マイグレーション戦略適合性
 
-### Phase 4: 統合
+### Phase 5: 統合
 1. **pr-bot**: PR作成、Issue紐付け、CI/CD実行
 
 ## エージェント協調ルール
@@ -183,11 +197,12 @@ issue-to-pr <github_issue_url> --base <branch_name>
 - `.claude/agents/architect-impact.md`
 - `.claude/agents/architect-product.md`
 - `.claude/agents/architect-tech.md`
-- `.claude/agents/db-migration.md`
 - `.claude/agents/pr-bot.md`
 - `.claude/agents/backend-expert.md`
 - `.claude/agents/frontend-expert.md`
 - `.claude/agents/reviewer.md`
+- `.claude/agents/implementation-planner.md`
+- `.claude/agents/implementation-tracker.md`
 
 ## 実行設定
 
@@ -202,37 +217,47 @@ phases:
     agents: [pr-bot]
     execution: sequential
     description: "ブランチ作成、作業環境初期化"
-    
+
   planning:
     product_owner_team:
       agents: [chief-product-owner, product-owner-ux, product-owner-tech]
       execution: sequential_with_parallel  # chief leads, others parallel, chief finalizes
       output: ".claude/desk/outputs/requirements/ISSUE-<number>.requirements.md"
       capabilities: [collaborative-development, solid-principles, code-quality-standards]
-    
+
     architect_team:
       agents: [architect-impact, architect-product, architect-tech, chief-architect]
       execution: sequential_with_parallel  # impact first, others parallel, chief finalizes
       output: ".claude/desk/outputs/design/ISSUE-<number>.design.md"
       capabilities: [impact-analysis, product-architecture, technical-architecture, architecture-integration]
-      
-    db_migration:
-      agents: [db-migration]
-      execution: sequential
-      depends_on: [architect_team]
-      output: ".claude/desk/outputs/migrations/"
+
+
+  implementation_planning:
+    agents: [implementation-planner]
+    execution: sequential
+    depends_on: [planning]
+    output: 
+      - ".claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md"
+      - ".claude/desk/outputs/implementation/ISSUE-<number>.progress.md"
 
   implementation:
     branch_creation:
       agents: [pr-bot]
       execution: sequential
+    progress_tracking:
+      agents: [implementation-tracker]
+      execution: continuous  # 他のエージェントと並行して進捗管理
+      depends_on: [implementation_planning]
+      responsibilities: ["progress_checklist_update", "dependency_checking", "task_assignment", "blocker_management"]
     development_teams:
       agents: [backend-expert, frontend-expert]
       execution: parallel  # 実装・テスト一体化エージェントが並列作業
-      capabilities: [backend-development, frontend-development, backend-testing, frontend-testing, backend-architecture, frontend-architecture, product-architecture, technical-architecture, solid-principles, tdd-methodology]
+      depends_on: [implementation_planning]
+      managed_by: implementation-tracker
+      capabilities: [backend-development, frontend-development, backend-testing, frontend-testing, database-migration, backend-architecture, frontend-architecture, product-architecture, technical-architecture, solid-principles, tdd-methodology]
 
   review:
-    agents: [reviewer, chief-product-owner, chief-architect, db-migration]
+    agents: [reviewer, chief-product-owner, chief-architect]
     execution: parallel
     approval_gate: all_required
     approval_file: ".claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md"
@@ -256,4 +281,4 @@ quality_enforcement:
   agent_configs: ".claude/agents/*.md"
   capabilities: ".claude/capabilities/*.md"
   output_directory: ".claude/desk/outputs/"
-```
+````

@@ -12,6 +12,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 主に以下の能力を特化して使用:
 - [Technical Architecture](.claude/capabilities/technical-architecture.md): 技術的品質・運用性を最優先とした設計の全領域
+- [Database Migration](.claude/capabilities/database-migration.md): データベースマイグレーション設計・戦略策定の専門知識
 
 ## 役割
 
@@ -57,6 +58,11 @@ tools: Read, Write, Edit, Grep, Glob
    - 設定管理・シークレット管理
    - 技術的負債削減・リファクタリング
 
+6. **データベース・マイグレーション設計**
+   - スキーマ変更戦略（前方/後方互換性、expand→migrate→contract）
+   - データ移行計画・段階的移行設計・オンライン移行
+   - ロールバック手順・整合性検証・カナリア検証戦略
+
 ### Phase 3: 成果物提出
 - 設計書を CAS ストレージに保存
 - `{$PWD}/.claude/desk/memory/outbox/architect-tech.outbox.ndjson` で chief-architect に結果報告
@@ -93,6 +99,20 @@ tools: Read, Write, Edit, Grep, Glob
 ### デプロイ・ロールバック
 ### 設定・シークレット管理
 ### 技術的負債対策
+
+## データベース・マイグレーション設計
+### スキーマ変更戦略
+- expand→migrate→contract パターン
+- 前方/後方互換性保証
+- オンライン移行での無停止運用
+### データ移行計画
+- 段階的移行手順
+- バックフィル戦略
+- カナリア検証計画
+### ロールバック・整合性検証
+- 安全な巻き戻し手順
+- データ整合性チェック
+- パフォーマンス影響評価
 
 ## 技術的制約・トレードオフ
 ### パフォーマンス vs コスト

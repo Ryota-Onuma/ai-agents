@@ -32,32 +32,45 @@
    - **architect-tech**: 技術品質重視の設計 (性能/可用性/セキュリティ/観測性/運用)
 3. **chief-architect + architect-impact**: 各専門家の成果物を統合・レビュー・最終化
 
-#### データベース移行
-
-**参加エージェント**: db-migration
-
-**実施事項**: アーキテクトチームの成果物を受けてスキーマ変更設計、移行戦略策定
-
 **成果物**:
 
 - **要件仕様書** (chief-product-owner): `.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
-- **設計書** (chief-architect): `.claude/desk/outputs/design/ISSUE-<number>.design.md`
+- **設計書** (chief-architect): `.claude/desk/outputs/design/ISSUE-<number>.design.md` (DB マイグレーション戦略を含む)
 - **ADR** (chief-architect): `.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
-- **データベース移行計画** (db-migration): `.claude/desk/outputs/migrations/`
 
-### 2. 実装フェーズ
+### 2. 実装計画フェーズ
 
-**参加エージェント**: pr-bot, backend-expert, frontend-expert
+**参加エージェント**: implementation-planner
 
-**協調パターン** (実装とテストの一体化):
+**実施事項**: 
+- planning フェーズの成果物（requirements.md、design.md）を分析
+- 実装タスクの分解と依存関係特定
+- 各タスクへの最適エージェント割り当て
+- 実装順序決定と並列実行可能性判定
+
+**成果物**:
+- **実装計画書** (implementation-planner): `.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
+- **進捗管理チェックリスト** (implementation-planner): `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
+
+### 3. 実装フェーズ
+
+**参加エージェント**: pr-bot, backend-expert, frontend-expert, implementation-tracker
+
+**協調パターン** (実装とテスト一体化 + 進捗管理):
 
 #### ブランチ作成
 - **pr-bot**: 新規ブランチ作成 (`issue/{number}-{description}`)
 
+#### 進捗管理
+- **implementation-tracker**: 
+  - **実施事項**: 各エージェントの完了報告受信、進捗チェックリスト更新、依存関係チェック、次タスク指示
+  - **管理ファイル**: `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` をリアルタイム更新
+  - **協調方法**: 各実装エージェントと標準完了報告フォーマットで連携
+
 #### 並列実装・テスト一体チーム
 - **backend-expert**: 
-  - **Capabilities**: [backend-development](../capabilities/backend-development.md), [backend-architecture](../capabilities/backend-architecture.md), [technical-architecture](../capabilities/technical-architecture.md), [backend-testing](../capabilities/backend-testing.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
-  - **実施事項**: バックエンド実装 + ユニット/統合/API/データベース/セキュリティテスト
+  - **Capabilities**: [backend-development](../capabilities/backend-development.md), [backend-architecture](../capabilities/backend-architecture.md), [technical-architecture](../capabilities/technical-architecture.md), [backend-testing](../capabilities/backend-testing.md), [database-migration](../capabilities/database-migration.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
+  - **実施事項**: バックエンド実装 + DB マイグレーション + ユニット/統合/API/データベース/セキュリティテスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、Kotlin/Go 優先、カバレッジ ≥ 85%
 
 - **frontend-expert**: 
@@ -67,20 +80,21 @@
 
 **同期ポイント** (サブエージェント間通信プロトコル使用):
 
+- **進捗報告**: backend-expert/frontend-expert → implementation-tracker (タスク完了都度)
+- **次タスク指示**: implementation-tracker → backend-expert/frontend-expert (依存関係解消時)
 - **API コントラクト調整**: backend-expert ↔ frontend-expert (各エージェントがテストも含めて完結性を保証)
 - **統合テスト実施**: backend-expert ↔ frontend-expert (エンドツーエンドテストの協調)
 - **セキュリティ・パフォーマンス確認**: 各エージェントが自分の領域で完全な品質保証
 
-### 3. レビューフェーズ
+### 4. レビューフェーズ
 
-**参加エージェント**: reviewer, chief-product-owner, chief-architect, db-migration
+**参加エージェント**: reviewer, chief-product-owner, chief-architect
 
 **レビュープロセス** (並列実行):
 
 1. **reviewer**: 差分レビューと静的チェック、コード規約・命名・複雑度確認
 2. **chief-product-owner**: 要件充足性確認、requirements.md との整合性チェック
-3. **chief-architect**: アーキテクチャ整合性確認、design.md 準拠チェック
-4. **db-migration**: スキーマ変更の安全性確認、移行計画との整合性
+3. **chief-architect**: アーキテクチャ整合性確認、design.md 準拠チェック、DB マイグレーション戦略適合性確認
 
 **承認ゲート管理**:
 - **承認ファイル**: `.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
@@ -88,7 +102,7 @@
 - **1つでも NG** があれば PR 作成停止
 - **修正後は再度全員レビュー実施**
 
-### 4. 統合フェーズ
+### 5. 統合フェーズ
 
 **参加エージェント**: pr-bot
 
