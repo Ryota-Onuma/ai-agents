@@ -1,0 +1,51 @@
+# プロジェクト構造
+
+エージェントプロジェクトの推奨ディレクトリ構造とファイル構成を定義します。
+
+## 推奨ディレクトリレイアウト
+
+```
+agents/
+  <agent-name>/
+    prompt/
+      system.md
+      examples.md
+    config/
+      agent.yaml
+    src/
+      planner.py|ts
+      executor.py|ts
+      tools/...
+    tests/
+      test_agent.py|ts
+memory/
+  <agent-name>/
+    vectorstore/...
+    episodes/...
+telemetry/
+  logs/
+  traces/
+configs/
+  models.yaml
+  tools.yaml
+scripts/
+  evals/
+```
+
+## ファイル構成
+
+### プロンプトファイル
+- `prompt/system.md`: 役割、ポリシー、出力契約
+- `prompt/examples.md`: 成功・失敗のfew-shotサンプル
+
+### 設定ファイル
+- `config/agent.yaml`: エージェント設定
+- モデル、ポリシー、メモリ、プランナー、ツール、ログ設定
+
+### 実装ファイル
+- `src/planner.py|ts`: 計画ロジック
+- `src/executor.py|ts`: 実行ロジック
+- `src/tools/`: ツール実装
+
+### テストファイル
+- `tests/test_agent.py|ts`: ユニット・統合テスト

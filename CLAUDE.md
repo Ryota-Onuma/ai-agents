@@ -2,54 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository Overview
+## 共通ルール
 
-This is an AI agents repository focused on designing, configuring, and operating autonomous/semi-autonomous systems. The repository currently contains documentation and guidelines for agent development but no implementation code yet.
+以下の共通ルールを参照してください：
 
-## Repository Structure
+- [プロジェクト構造](.cursor/rules/project-structure.mdc)
 
-- `AGENTS.md` - Comprehensive guide for agent design, configuration, and operation
-- Repository follows a recommended structure for organizing agents, memory, telemetry, and configurations
+---
 
-## Key Concepts from AGENTS.md
+## Claude 固有のルール
 
-- **Agent Definition**: Autonomous systems that maintain context, plan actions, use tools, and produce constrained outputs
-- **Core Components**: Objective/policies, reasoning/planning, tool use, memory, observation/feedback
-- **Architecture Patterns**: Reactive (one-shot), iterative (think/act/observe), hierarchical (delegated sub-agents)
+### サブエージェント活用
 
-## Recommended Development Approach
+- Task tool を使用した専門エージェントの呼び出し
+- 複雑なタスクは適切なサブエージェント（planner、architect、reviewer 等）に委譲
+- エージェント間の連携とデータの受け渡し最適化
 
-When working with agents in this repository:
+### プロンプト管理
 
-1. **Design First**: Define purpose, inputs/outputs, success metrics, and constraints before coding
-2. **Minimal Toolsets**: Start with essential tools only, add more as needed
-3. **Safety First**: Implement guardrails (rate limits, allow-lists, budgets, kill switches)
-4. **Observability**: Log all inputs, decisions, tool calls, and outputs
-5. **Testing**: Write contract tests for prompts, tools, and plans
+- システムプロンプトの構造化と再利用性
+- Few-shot example の効果的な活用
+- コンテキスト制限内での情報の最適化
 
-## Agent Development Structure
+### エージェント設定管理
 
-Follow the recommended layout from AGENTS.md:
-- `agents/<name>/prompt/` - System prompts and examples
-- `agents/<name>/config/` - Agent configuration (YAML)
-- `agents/<name>/src/` - Implementation (planner, executor, tools)
-- `agents/<name>/tests/` - Unit and integration tests
-- `memory/<name>/` - Vector stores and episode storage
-- `telemetry/` - Logs and traces
-- `configs/` - Model and tool configurations
+- .claude/agents/ ディレクトリ内の設定ファイル管理
+- Markdown ベースの設定の構造化
+- エージェント間の一貫性保持
+- プロトコル({$PWD}/memory/PROTOCOL.md)を用いて、サブエージェント間は通信を行う。
 
-## Development Guidelines
-
-- Keep prompts short, explicit, and testable
-- Prefer few-shot examples over long narratives
-- Implement proper memory strategies (short-term scratchpad, optional long-term storage)
-- Use bounded loops with max steps, cost, and duration limits
-- Version agents and prompts with changelogs
-- Include safety redlines for PII, credentials, and self-modification
-
-## Testing Strategy
-
-- Unit tests for tool contracts and planner logic
-- Golden tests for prompt outputs against fixtures
-- E2E evaluation scenarios with realistic tasks and assertions
-- Regression suite for documented failures
+---
