@@ -20,6 +20,84 @@ issue-to-pr-universal <github_issue_url> --base <branch_name>
 
 ## 実行フロー（シーケンシャル実行）
 
+### シーケンス図（Mermaid）
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User/CLI
+    participant PR as pr-bot
+    participant CPO as chief-product-owner
+    participant POUX as product-owner-ux
+    participant POT as product-owner-tech
+    participant CA as chief-architect
+    participant AI as architect-impact
+    participant AP as architect-product
+    participant AT as architect-tech
+    participant IP as implementation-planner
+    participant IT as implementation-tracker
+    participant BE as backend-expert
+    participant FE as frontend-expert
+    participant RV as reviewer
+    participant GH as GitHub
+
+    User->>PR: issue-to-pr-universal <issue_url> [--base]
+    Note over PR: Phase 0: ブランチ作成
+    PR-->>User: ブランチ作成完了
+
+    Note over CPO,PR: Phase 1.1: プロダクトオーナーチーム
+    PR->>CPO: Issue情報を渡す
+    CPO-->>PR: 初期要件分析結果
+    PR->>POUX: 初期要件分析結果
+    POUX-->>PR: UX仕様書
+    PR->>POT: 初期要件分析結果
+    POT-->>PR: 技術仕様書
+    PR->>CPO: UX/技術仕様 統合依頼
+    CPO-->>PR: requirements.md を出力
+
+    Note over AI,CA: Phase 1.2: アーキテクトチーム
+    PR->>AI: requirements.md
+    AI-->>PR: 影響調査レポート
+    PR->>AP: requirements.md + 影響調査
+    AP-->>PR: プロダクト設計書
+    PR->>AT: requirements.md + 影響調査
+    AT-->>PR: 技術設計書
+    PR->>CA: 統合依頼
+    CA-->>PR: design.md + ADR
+
+    Note over IP,PR: Phase 2: 実装計画
+    PR->>IP: requirements.md + design.md
+    IP-->>PR: 実装計画書 + 進捗チェックリスト
+
+    Note over IT,FE: Phase 3: 実装
+    PR->>IT: 進捗管理開始
+    IT-->>PR: 初期化完了
+    PR->>BE: バックエンド実装依頼
+    BE-->>PR: バックエンド実装完了
+    PR->>IT: 進捗更新
+    IT-->>PR: 次タスク判定
+    PR->>FE: フロントエンド実装依頼
+    FE-->>PR: フロントエンド実装完了
+    PR->>IT: 最終進捗更新
+    IT-->>PR: 実装フェーズ完了
+
+    Note over RV,CA: Phase 4: レビュー（承認ゲート）
+    PR->>RV: コードレビュー依頼
+    RV-->>PR: レビュー報告書
+    PR->>CPO: 要件承認依頼
+    CPO-->>PR: 要件承認結果
+    PR->>CA: アーキ承認依頼
+    CA-->>PR: アーキ承認結果
+    PR->>PR: 全承認チェック
+
+    alt 全承認OK
+      PR->>GH: PR作成、Issue紐付け
+      GH-->>User: PR URL
+    else 承認NG
+      PR-->>User: 承認NGで停止
+    end
+```
+
 ### Phase 0: ブランチ作成
 
 1. **pr-bot エージェントを呼び出し**:
