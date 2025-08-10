@@ -25,8 +25,8 @@ implementation 完了後の最終工程として、以下を実施:
 1. **引数解析**: `$ARGUMENTS` から `--base` ブランチを解析（既定=main）
 2. **承認チェック**: 必須承認者の承認状況を確認
    - 対象ファイル: `~/.claude/desk/outputs/approvals/ISSUE-<number>.approvals.md`
-   - 必須承認者: planner, chief-architect, reviewer, implementation-tracker
-   - 条件付き: db-migration（DB 変更時のみ必須）
+   - 必須承認者: chief-product-owner, chief-architect, reviewer, implementation-tracker
+   - 条件付き: architect-tech（DB 変更時のみ必須）
 3. **未コミット変更確認**: 作業中の変更がある場合は方針を確認
 
 ### Phase 2: ブランチ作成・切り替え
@@ -73,16 +73,16 @@ implementation 完了後の最終工程として、以下を実施:
 
 | 承認者                 | 確認項目                 | ファイル                         |
 | ---------------------- | ------------------------ | -------------------------------- |
-| planner                | 要件・計画の妥当性       | `ISSUE-<number>.requirements.md` |
+| chief-product-owner    | 要件・計画の妥当性       | `ISSUE-<number>.requirements.md` |
 | chief-architect        | 設計・アーキテクチャ統括 | `ISSUE-<number>.design.md`       |
 | reviewer               | コード品質・規約準拠     | `ISSUE-<number>.review.md`       |
 | implementation-tracker | 実装完了・品質確認       | `ISSUE-<number>.progress.md`     |
 
 ### 条件付き承認者
 
-| 承認者       | 条件              | 確認項目                       |
-| ------------ | ----------------- | ------------------------------ |
-| db-migration | DB スキーマ変更時 | マイグレーション・ロールバック |
+| 承認者         | 条件              | 確認項目                       |
+| -------------- | ----------------- | ------------------------------ |
+| architect-tech | DB スキーマ変更時 | マイグレーション・ロールバック |
 
 ### 承認ステータス形式
 
@@ -99,7 +99,7 @@ implementation 完了後の最終工程として、以下を実施:
 
 ### 必須承認者
 
-- [x] **planner** - 承認済み (2024-01-15 14:30)
+- [x] **chief-product-owner** - 承認済み (2024-01-15 14:30)
   - 要件定義・計画の妥当性確認済み
 - [x] **chief-architect** - 承認済み (2024-01-15 15:45)
   - 設計・アーキテクチャ統括レビュー完了
@@ -110,7 +110,7 @@ implementation 完了後の最終工程として、以下を実施:
 
 ### 条件付き承認者
 
-- [x] **db-migration** - 承認済み (2024-01-15 15:00)
+- [x] **architect-tech** - 承認済み (2024-01-15 15:00)
   - マイグレーション・ロールバック確認済み
 ```
 
@@ -122,6 +122,7 @@ implementation 完了後の最終工程として、以下を実施:
 ❌ PR 作成停止 - 承認ゲート未達
 
 未承認者:
+- chief-product-owner: 要件・計画妥当性確認待ち
 - reviewer: コードレビュー未完了
 - implementation-tracker: 実装品質確認待ち
 
