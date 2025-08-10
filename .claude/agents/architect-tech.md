@@ -14,6 +14,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 - [Technical Architecture](.claude/capabilities/technical-architecture.md): 技術的品質・運用性を最優先とした設計の全領域
 - [Database Migration](.claude/capabilities/database-migration.md): データベースマイグレーション設計・戦略策定の専門知識
+- [Kotlin Development](.claude/capabilities/kotlin-development.md): バックエンド技術実装における具体的な技術選択肢
 
 ## 役割
 

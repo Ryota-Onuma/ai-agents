@@ -10,7 +10,7 @@
 
 - **[SOLID 原則の実践](../capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則を実装に適用
 - **[TDD 実践（t-wada 方式）](../capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証
-- **[バックエンド開発](../capabilities/backend-development.md)**: サーバーサイド開発に特化した技術的能力
+- **[Kotlin 開発](../capabilities/kotlin-development.md)**: 現代的なバックエンド開発に特化した技術的能力
 - **[バックエンドアーキテクチャ](../capabilities/backend-architecture.md)**: API 設計とデータベース連携パターン
 - **[技術アーキテクチャ](../capabilities/technical-architecture.md)**: バックエンド領域の技術的品質・運用性設計理解
 - **[バックエンドテスト](../capabilities/backend-testing.md)**: ユニット/統合/API/DB/セキュリティテスト実装

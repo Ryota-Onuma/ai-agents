@@ -10,7 +10,7 @@
 
 - **[SOLID 原則の実践](../capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則をフロントエンドに適用
 - **[TDD 実践（t-wada 方式）](../capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証（React Testing Library 使用）
-- **[フロントエンド開発](../capabilities/frontend-development.md)**: クライアントサイド開発に特化した技術的能力
+- **[React + TypeScript 開発](../capabilities/react-typescript.md)**: 現代的なフロントエンド開発に特化した技術的能力
 - **[フロントエンドアーキテクチャ](../capabilities/frontend-architecture.md)**: コンポーネント設計とアーキテクチャパターン
 - **[プロダクトアーキテクチャ](../capabilities/product-architecture.md)**: フロントエンド領域の UX 実現・価値创出設計理解
 - **[フロントエンドテスト](../capabilities/frontend-testing.md)**: ユニット/統合/UI/UX テスト実装
@@ -34,7 +34,4 @@
 
 ### テスト戦略
 
-- **ユニットテスト**: React Testing Library でコンポーネント単体テスト
-- **統合テスト**: ページ全体、ユーザーフローの統合テスト
-- **UI テスト**: Storybook でのビジュアルテスト、スナップショットテスト
-- **UX テスト**: パフォーマンス、レスポンシブテスト
+- **ユニットテスト**: 関数単体テスト

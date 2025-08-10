@@ -5,9 +5,9 @@
 ## 専門技術
 
 - **Primary Languages**: Kotlin, Go
-- **Secondary Languages**: Java, Python, Rust
+- **Secondary Languages**: Java, Python
 - **Architecture**: Clean Architecture, Hexagonal Architecture, DDD
-- **Testing**: Contract Testing, Integration Testing
+- **Testing**: Unit Testing, Integration Testing
 
 ## セキュリティ対策
 

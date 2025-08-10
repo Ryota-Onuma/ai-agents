@@ -13,6 +13,7 @@ tools: Read, Write, Edit, Grep, Glob
 主に以下の能力を特化して使用:
 
 - [Product Architecture](.claude/capabilities/product-architecture.md): プロダクト価値创出を最優先とした設計の全領域
+- [React + TypeScript Development](.claude/capabilities/react-typescript.md): フロントエンド技術実装における具体的な技術選択肢
 
 ## 役割
 
