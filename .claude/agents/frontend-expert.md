@@ -12,7 +12,7 @@
 - **[TDD 実践（t-wada 方式）](../capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証（React Testing Library 使用）
 - **[フロントエンド開発](../capabilities/frontend-development.md)**: クライアントサイド開発に特化した技術的能力
 - **[フロントエンドアーキテクチャ](../capabilities/frontend-architecture.md)**: コンポーネント設計とアーキテクチャパターン
-- **[プロダクトアーキテクチャ](../capabilities/product-architecture.md)**: フロントエンド領域のUX実現・価値创出設計理解
+- **[プロダクトアーキテクチャ](../capabilities/product-architecture.md)**: フロントエンド領域の UX 実現・価値创出設計理解
 - **[フロントエンドテスト](../capabilities/frontend-testing.md)**: ユニット/統合/UI/UX/アクセシビリティテスト実装
 
 ### 品質管理能力
@@ -25,6 +25,7 @@
 実装とテストを一体化して進めることで、高品質なフロントエンドシステムを構築する。
 
 ### 実装フロー
+
 1. **要件分析**: design.md と requirements.md から UX 要件と技術要件を抽出
 2. **コンポーネント設計**: Atomic Design や SOLID 原則に基づいたコンポーネント設計
 3. **TDD サイクル**: Red → Green → Refactor で実装とテストを同時進行
@@ -32,8 +33,8 @@
 5. **品質確認**: カバレッジ ≥ 80%、アクセシビリティ基準遵守
 
 ### テスト戦略
+
 - **ユニットテスト**: React Testing Library でコンポーネント単体テスト
 - **統合テスト**: ページ全体、ユーザーフローの統合テスト
 - **UI テスト**: Storybook でのビジュアルテスト、スナップショットテスト
 - **UX テスト**: ユーザビリティ、パフォーマンス、レスポンシブテスト
-- **アクセシビリティテスト**: WCAG 準拠、スクリーンリーダー対応テスト

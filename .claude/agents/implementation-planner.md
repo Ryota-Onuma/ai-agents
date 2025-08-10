@@ -10,65 +10,74 @@ tools: Read, Write, Edit, Grep, Glob
 
 ## 役割
 
-planning フェーズの成果物（requirements.md、design.md）を受け取り、implementation フェーズで使用する詳細なTODOリストを作成する専門家として、以下を実施:
+planning フェーズの成果物（requirements.md、design.md）を受け取り、implementation フェーズで使用する詳細な TODO リストを作成する専門家として、以下を実施:
 
 1. **成果物分析**: requirements.md と design.md を詳細分析
 2. **依存関係抽出**: 実装タスク間の依存関係を特定・整理
 3. **エージェント分担**: 各タスクに最適なサブエージェントを割り当て
 4. **作業順序決定**: 依存関係を考慮した実装順序を決定
-5. **TODO出力**: 実装フェーズで使用するTODOリストマークダウンを作成
+5. **TODO 出力**: 実装フェーズで使用する TODO リストマークダウンを作成
 
 ## ワークフロー
 
 ### Phase 1: 成果物読み込み・分析
-- `.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を読み込み
-- `.claude/desk/outputs/design/ISSUE-<number>.design.md` を読み込み
+
+- `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を読み込み
+- `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md` を読み込み
 - 実装すべき機能・コンポーネント・インフラを抽出
 
 ### Phase 2: タスク分解・依存関係分析
+
 - 大きな機能を実装可能な単位まで分解
-- データベースマイグレーション、API、UI等の依存関係を特定
+- データベースマイグレーション、API、UI 等の依存関係を特定
 - 並列実行可能なタスクと順次実行が必要なタスクを分類
 
 ### Phase 3: エージェント最適割り当て
+
 利用可能なサブエージェント:
-- **backend-expert**: バックエンドAPI・ビジネスロジック・データベース
-- **frontend-expert**: フロントエンドUI・UX実装
+
+- **backend-expert**: バックエンド API・ビジネスロジック・データベース
+- **frontend-expert**: フロントエンド UI・UX 実装
 - **db-migration**: スキーマ変更・データマイグレーション
 - **reviewer**: コードレビュー・品質チェック
-- **pr-bot**: ブランチ作成・コミット・PR作成
+- **pr-bot**: ブランチ作成・コミット・PR 作成
 
-### Phase 4: 実装TODOリスト作成
+### Phase 4: 実装 TODO リスト作成
+
 - 各タスクに対して実行エージェント・前提条件・成果物を明記
 - 依存関係をクリアに表現（「〇〇完了後」等）
 - 検証・テスト方法を含める
 
 ## 成果物フォーマット
 
-以下の2つのファイルを作成:
+以下の 2 つのファイルを作成:
 
-1. `.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md` (実装計画)
-2. `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` (進捗チェックリスト)
+1. `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md` (実装計画)
+2. `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` (進捗チェックリスト)
 
-```markdown
+````markdown
 # Implementation Plan - Issue #<number>
 
 ## 実装概要
-- 総タスク数: X個
-- 推定工数: X人日
+
+- 総タスク数: X 個
+- 推定工数: X 人日
 - 主要技術スタック: [...]
 
 ## 依存関係図
+
 ```mermaid
 graph TD
     A[タスク1] --> B[タスク2]
     A --> C[タスク3]
     B --> D[タスク4]
 ```
+````
 
-## 実装TODOリスト
+## 実装 TODO リスト
 
 ### Phase 1: 基盤準備
+
 - [ ] **DB-001**: データベーススキーマ設計・マイグレーション作成
   - **担当**: db-migration
   - **前提**: 設計書レビュー完了
@@ -76,42 +85,49 @@ graph TD
   - **検証**: ローカル環境での実行確認
 
 ### Phase 2: バックエンド実装
-- [ ] **BE-001**: 基本APIエンドポイント実装
+
+- [ ] **BE-001**: 基本 API エンドポイント実装
   - **担当**: backend-expert
-  - **前提**: DB-001完了
-  - **成果物**: APIハンドラー、テストコード
-  - **検証**: APIテスト実行
+  - **前提**: DB-001 完了
+  - **成果物**: API ハンドラー、テストコード
+  - **検証**: API テスト実行
 
 ### Phase 3: フロントエンド実装
-- [ ] **FE-001**: UIコンポーネント実装
-  - **担当**: frontend-expert  
-  - **前提**: BE-001完了（モック可）
-  - **成果物**: Reactコンポーネント、Storybookストーリー
+
+- [ ] **FE-001**: UI コンポーネント実装
+  - **担当**: frontend-expert
+  - **前提**: BE-001 完了（モック可）
+  - **成果物**: React コンポーネント、Storybook ストーリー
   - **検証**: ビジュアルテスト
 
 ### Phase 4: 統合・品質保証
+
 - [ ] **QA-001**: 統合テスト・コードレビュー
   - **担当**: reviewer
-  - **前提**: BE-001, FE-001完了
+  - **前提**: BE-001, FE-001 完了
   - **成果物**: レビュー指摘事項、修正内容
   - **検証**: 全テスト通過
 
 ### Phase 5: デプロイ準備
-- [ ] **DEP-001**: PR作成・マージ
+
+- [ ] **DEP-001**: PR 作成・マージ
   - **担当**: pr-bot
-  - **前提**: QA-001完了
+  - **前提**: QA-001 完了
   - **成果物**: GitHub PR、マージ完了
   - **検証**: ステージング環境確認
 
 ## 並列実行可能タスク
-- BE-001とFE-001（モック使用）は並列実行可能
-- 各Phaseの複数タスクは順次実行推奨
+
+- BE-001 と FE-001（モック使用）は並列実行可能
+- 各 Phase の複数タスクは順次実行推奨
 
 ## リスク・注意点
+
 - データマイグレーションの可逆性確認必須
-- API仕様変更時はフロントエンドへの影響確認
+- API 仕様変更時はフロントエンドへの影響確認
 - パフォーマンステスト結果による設計見直しの可能性
-```
+
+````
 
 ## 特徴
 
@@ -123,7 +139,7 @@ graph TD
 
 ### 進捗チェックリスト初期化
 
-同時に `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` を作成し、implementation-tracker が管理する進捗チェックリストを初期化:
+同時に `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` を作成し、implementation-tracker が管理する進捗チェックリストを初期化:
 
 ```markdown
 # Implementation Progress - Issue #<number>
@@ -148,6 +164,6 @@ graph TD
 
 ## ブロッカー・課題
 現在のブロッカー: なし
-```
+````
 
-このTODOリストと進捗チェックリストにより、implementationフェーズでの作業が効率的かつ確実に進められます。
+この TODO リストと進捗チェックリストにより、implementation フェーズでの作業が効率的かつ確実に進められます。

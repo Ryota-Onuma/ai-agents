@@ -15,7 +15,7 @@
 **協調順序** (サブエージェント間通信プロトコル使用):
 
 1. **chief-product-owner**: GitHub Issue 分析、初期要件整理
-2. **並列処理**: 
+2. **並列処理**:
    - **product-owner-ux**: UX/ユーザー体験特化仕様作成
    - **product-owner-tech**: 技術/非機能要件特化仕様作成
 3. **chief-product-owner**: 各専門家の成果物を統合・レビュー・最終化
@@ -27,30 +27,32 @@
 **協調順序** (サブエージェント間通信プロトコル使用):
 
 1. **architect-impact**: 既存システム影響調査、リスク評価
-2. **並列処理**: 
+2. **並列処理**:
    - **architect-product**: プロダクト価値重視の設計 (UX/ロードマップ/価値仮説との整合)
    - **architect-tech**: 技術品質重視の設計 (性能/可用性/セキュリティ/観測性/運用)
 3. **chief-architect + architect-impact**: 各専門家の成果物を統合・レビュー・最終化
 
 **成果物**:
 
-- **要件仕様書** (chief-product-owner): `.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
-- **設計書** (chief-architect): `.claude/desk/outputs/design/ISSUE-<number>.design.md` (DB マイグレーション戦略を含む)
-- **ADR** (chief-architect): `.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
+- **要件仕様書** (chief-product-owner): `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
+- **設計書** (chief-architect): `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md` (DB マイグレーション戦略を含む)
+- **ADR** (chief-architect): `$PWD/.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
 
 ### 2. 実装計画フェーズ
 
 **参加エージェント**: implementation-planner
 
-**実施事項**: 
+**実施事項**:
+
 - planning フェーズの成果物（requirements.md、design.md）を分析
 - 実装タスクの分解と依存関係特定
 - 各タスクへの最適エージェント割り当て
 - 実装順序決定と並列実行可能性判定
 
 **成果物**:
-- **実装計画書** (implementation-planner): `.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
-- **進捗管理チェックリスト** (implementation-planner): `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
+
+- **実装計画書** (implementation-planner): `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
+- **進捗管理チェックリスト** (implementation-planner): `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
 
 ### 3. 実装フェーズ
 
@@ -59,21 +61,25 @@
 **協調パターン** (実装とテスト一体化 + 進捗管理):
 
 #### ブランチ作成
+
 - **pr-bot**: 新規ブランチ作成 (`issue/{number}-{description}`)
 
 #### 進捗管理
-- **implementation-tracker**: 
+
+- **implementation-tracker**:
   - **実施事項**: 各エージェントの完了報告受信、進捗チェックリスト更新、依存関係チェック、次タスク指示
-  - **管理ファイル**: `.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` をリアルタイム更新
+  - **管理ファイル**: `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` をリアルタイム更新
   - **協調方法**: 各実装エージェントと標準完了報告フォーマットで連携
 
 #### 並列実装・テスト一体チーム
-- **backend-expert**: 
+
+- **backend-expert**:
+
   - **Capabilities**: [backend-development](../capabilities/backend-development.md), [backend-architecture](../capabilities/backend-architecture.md), [technical-architecture](../capabilities/technical-architecture.md), [backend-testing](../capabilities/backend-testing.md), [database-migration](../capabilities/database-migration.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
   - **実施事項**: バックエンド実装 + DB マイグレーション + ユニット/統合/API/データベース/セキュリティテスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、Kotlin/Go 優先、カバレッジ ≥ 85%
 
-- **frontend-expert**: 
+- **frontend-expert**:
   - **Capabilities**: [frontend-development](../capabilities/frontend-development.md), [frontend-architecture](../capabilities/frontend-architecture.md), [product-architecture](../capabilities/product-architecture.md), [frontend-testing](../capabilities/frontend-testing.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
   - **実施事項**: フロントエンド実装 + ユニット/統合/UI/UX/アクセシビリティテスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、React+TypeScript、カバレッジ ≥ 80%
@@ -97,9 +103,10 @@
 3. **chief-architect**: アーキテクチャ整合性確認、design.md 準拠チェック、DB マイグレーション戦略適合性確認
 
 **承認ゲート管理**:
-- **承認ファイル**: `.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
+
+- **承認ファイル**: `$PWD/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
 - **承認条件**: **全員の `approved`** が揃った場合のみ PR 作成許可
-- **1つでも NG** があれば PR 作成停止
+- **1 つでも NG** があれば PR 作成停止
 - **修正後は再度全員レビュー実施**
 
 ### 5. 統合フェーズ
@@ -107,6 +114,7 @@
 **参加エージェント**: pr-bot
 
 **実施事項**:
+
 - **PR 作成**: `gh pr create` で GitHub PR 作成
 - **Issue 紐付け**: `Closes #<number>` で自動クローズ
 - **ラベル/レビュワー設定**: プロジェクト規約に従って設定
@@ -114,7 +122,7 @@
 
 ## エージェント間通信プロトコル
 
-プロトコル（`.claude/desk/memory/PROTOCOL.md`）を使用してサブエージェント間通信を行う。
+プロトコル（`$PWD/.claude/desk/memory/PROTOCOL.md`）を使用してサブエージェント間通信を行う。
 
 ### 協調ルール
 
@@ -155,12 +163,14 @@
 ### ブロッカー対応・エラーハンドリング
 
 #### サブエージェント間通信レベルのエラー対応
+
 - **TTL タイムアウト**: メッセージの自動無効化、再送機能
 - **locks 競合**: リソースロックの原子的取得・解放
 - **barriers 管理**: フェーズ同期ポイントでの進行制御
 - **receipts ack**: 処理完了確認と再送防止
 
 #### エージェントレベルのブロッカー対応
+
 - **技術的制約**: chief-architect、backend-expert、frontend-expert が協調して解決策検討
 - **実装品質問題**: 各 expert エージェントが実装とテストを一体で管理、TDD で品質保証
 - **API コントラクト競合**: backend-expert ↔ frontend-expert 間でコントラクト調整
@@ -171,11 +181,13 @@
 ### エスカレーション・異常時対応
 
 #### エージェントレベルエスカレーション
-- **チーム内協議**: chief-* エージェントが統括してチーム内協議を主導
+
+- **チーム内協議**: chief-\* エージェントが統括してチーム内協議を主導
 - **チーム間協議**: プロダクトオーナーチーム ↔ アーキテクトチームの連携
 - **全エージェント協議**: 特に複雑な技術的制約やビジネス要件での競合
 
 #### ユーザーエスカレーション
+
 - **最終判断**: エージェント協議で解決困難な場合、ユーザーに判断を仰ぐ
 - **総合的なコンテキスト提供**: 各エージェントの観点と成果物を統合して情報提供
 - **実装優先度の再評価**: ビジネス価値、技術的リスク、リソース制約のバランス

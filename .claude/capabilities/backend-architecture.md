@@ -10,7 +10,7 @@
 
 ## API 設計・実装
 
-- RESTful API、GraphQL API 設計
+- RESTful API 設計
 - OpenAPI/Swagger 仕様書作成
 - frontend-expert との API コントラクト調整
 

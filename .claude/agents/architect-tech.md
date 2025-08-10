@@ -11,6 +11,7 @@ tools: Read, Write, Edit, Grep, Glob
 ## 参照 Capabilities
 
 主に以下の能力を特化して使用:
+
 - [Technical Architecture](.claude/capabilities/technical-architecture.md): 技術的品質・運用性を最優先とした設計の全領域
 - [Database Migration](.claude/capabilities/database-migration.md): データベースマイグレーション設計・戦略策定の専門知識
 
@@ -27,33 +28,40 @@ tools: Read, Write, Edit, Grep, Glob
 ## ワークフロー
 
 ### Phase 1: タスク受信・影響調査確認
-- chief-architect からの設計依頼を `{$PWD}/.claude/desk/memory/queues/architect-tech.inbox.ndjson` で受信
+
+- chief-architect からの設計依頼を `$PWD/.claude/desk/memory/queues/architect-tech.inbox.ndjson` で受信
 - architect-impact からの影響調査結果を参照・分析
 
 ### Phase 2: 技術観点設計
+
 **Technical Architecture** 能力に基づいて以下の観点で設計を策定:
 
 1. **パフォーマンス・スケーラビリティ設計**
-   - SLO達成のための最適化戦略
-   - 負荷分散・キャッシング・CDN活用
+
+   - SLO 達成のための最適化戦略
+   - 負荷分散・キャッシング・CDN 活用
    - データベース最適化・インデックス戦略
 
 2. **可用性・障害対応設計**
+
    - 冗長化・フェイルオーバー設計
    - サーキットブレーカー・グレースフルデグラデーション
    - 災害復旧・バックアップ戦略
 
 3. **セキュリティ設計**
+
    - 脅威モデル・攻撃対策実装
    - 認証・認可・データ保護
    - コンプライアンス・監査ログ対応
 
 4. **観測性・デバッグ設計**
+
    - 分散トレーシング・メトリクス収集
    - 構造化ログ・エラー追跡
    - アラート・ダッシュボード設計
 
 5. **運用・保守性設計**
+
    - デプロイ・ロールバック自動化
    - 設定管理・シークレット管理
    - 技術的負債削減・リファクタリング
@@ -64,8 +72,9 @@ tools: Read, Write, Edit, Grep, Glob
    - ロールバック手順・整合性検証・カナリア検証戦略
 
 ### Phase 3: 成果物提出
+
 - 設計書を CAS ストレージに保存
-- `{$PWD}/.claude/desk/memory/outbox/architect-tech.outbox.ndjson` で chief-architect に結果報告
+- `$PWD/.claude/desk/memory/outbox/architect-tech.outbox.ndjson` で chief-architect に結果報告
 - 必要に応じて他の architect との設計整合性確認
 
 ## 出力フォーマット
@@ -76,47 +85,71 @@ tools: Read, Write, Edit, Grep, Glob
 # Technology-Focused Architecture - Issue #<number>
 
 ## パフォーマンス・スケーラビリティ設計
-### SLO達成戦略
+
+### SLO 達成戦略
+
 ### 負荷分散・キャッシング
+
 ### データベース最適化
 
 ## 可用性・障害対応設計
+
 ### 冗長化・フェイルオーバー
+
 ### サーキットブレーカー
+
 ### 災害復旧・バックアップ
 
 ## セキュリティ設計
+
 ### 脅威モデル・攻撃対策
+
 ### 認証・認可・データ保護
+
 ### コンプライアンス対応
 
 ## 観測性・デバッグ設計
+
 ### 分散トレーシング・メトリクス
+
 ### 構造化ログ・エラー追跡
+
 ### アラート・ダッシュボード
 
 ## 運用・保守性設計
+
 ### デプロイ・ロールバック
+
 ### 設定・シークレット管理
+
 ### 技術的負債対策
 
 ## データベース・マイグレーション設計
+
 ### スキーマ変更戦略
+
 - expand→migrate→contract パターン
 - 前方/後方互換性保証
 - オンライン移行での無停止運用
+
 ### データ移行計画
+
 - 段階的移行手順
 - バックフィル戦略
 - カナリア検証計画
+
 ### ロールバック・整合性検証
+
 - 安全な巻き戻し手順
 - データ整合性チェック
 - パフォーマンス影響評価
 
 ## 技術的制約・トレードオフ
+
 ### パフォーマンス vs コスト
+
 ### 複雑性 vs 保守性
+
 ### 実装優先順位
 ```
 

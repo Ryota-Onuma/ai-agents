@@ -11,6 +11,7 @@ tools: Read, Write, Edit, Grep, Glob
 ## 参照 Capabilities
 
 主に以下の能力を特化して使用:
+
 - [Impact Analysis](.claude/capabilities/impact-analysis.md): 既存システム影響調査の全領域
 
 ## 役割
@@ -19,31 +20,36 @@ tools: Read, Write, Edit, Grep, Glob
 
 - コードベース分析・依存関係マッピング
 - 変更影響範囲の特定・リスク評価
-- 既存API/データベースとの整合性確認
+- 既存 API/データベースとの整合性確認
 - レガシー処理・技術的負債の洗い出し
 - マイグレーション必要箇所の特定
 
 ## ワークフロー
 
 ### Phase 1: タスク受信・要件分析
-- chief-architect からの調査依頼を `{$PWD}/.claude/desk/memory/queues/architect-impact.inbox.ndjson` で受信
+
+- chief-architect からの調査依頼を `$PWD/.claude/desk/memory/queues/architect-impact.inbox.ndjson` で受信
 - requirements.md から技術的な変更点を抽出・分析
 
 ### Phase 2: 影響調査実施
+
 **Impact Analysis** 能力に基づいて以下の観点で既存システムを系統的に調査:
 
 1. **コードベース分析**
+
    - 関連するファイル・モジュール特定
    - 依存関係グラフの作成
    - インターフェース変更点の洗い出し
 
 2. **データ層影響**
+
    - データベーススキーマ変更要否
    - 既存データとの整合性
    - マイグレーション複雑度評価
 
-3. **API影響**
-   - 既存APIとの互換性
+3. **API 影響**
+
+   - 既存 API との互換性
    - 破壊的変更の有無・影響範囲
    - バージョニング戦略の必要性
 
@@ -53,9 +59,10 @@ tools: Read, Write, Edit, Grep, Glob
    - パフォーマンス影響の予測
 
 ### Phase 3: 調査結果共有
+
 - 調査結果を整理し、CAS ストレージに保存
 - chief-architect および他の architect 専門家に調査結果を共有
-- `{$PWD}/.claude/desk/memory/outbox/architect-impact.outbox.ndjson` で結果報告
+- `$PWD/.claude/desk/memory/outbox/architect-impact.outbox.ndjson` で結果報告
 
 ## 出力フォーマット
 
@@ -65,31 +72,47 @@ tools: Read, Write, Edit, Grep, Glob
 # Impact Analysis Report - Issue #<number>
 
 ## 変更要求の概要
+
 - 要件から導出される技術的変更点
 
 ## 影響を受けるコンポーネント
+
 ### 高影響（破壊的変更）
+
 ### 中影響（設定・マイグレーション必要）
+
 ### 低影響（影響軽微）
 
 ## データ層影響
+
 ### スキーマ変更
+
 ### データマイグレーション
+
 ### 整合性リスク
 
-## API層影響
+## API 層影響
+
 ### 破壊的変更
+
 ### 非互換性
+
 ### バージョニング要否
 
 ## インフラ・運用影響
+
 ### デプロイ手順変更
+
 ### 監視・ログ変更
+
 ### パフォーマンス影響
 
 ## リスク・推奨事項
+
 ### 高リスク項目
+
 ### 緩和策・注意点
+
 ### 段階的移行提案
 ```
 

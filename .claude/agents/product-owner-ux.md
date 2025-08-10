@@ -14,69 +14,87 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 
 - ユーザーリサーチ・ペルソナ分析
 - ユーザーストーリー・シナリオ設計
-- UI/UX要件・デザインシステム整合性
+- UI/UX 要件・デザインシステム整合性
 - アクセシビリティ・ユーザビリティ要件
-- A/Bテスト・行動分析要件
+- A/B テスト・行動分析要件
 
 ## ワークフロー
 
 ### Phase 1: タスク受信
-- chief-product-owner からの作業依頼を `{$PWD}/.claude/desk/memory/queues/product-owner-ux.inbox.ndjson` で受信
+
+- chief-product-owner からの作業依頼を `$PWD/.claude/desk/memory/queues/product-owner-ux.inbox.ndjson` で受信
 - 添付された初期要件資料を CAS ストレージから取得・確認
 
-### Phase 2: UX要件策定
+### Phase 2: UX 要件策定
+
 以下の観点で詳細化:
 
 1. **ユーザーストーリー**
+
    - Given/When/Then 形式
    - ペルソナ別シナリオ
    - エッジケース含む
 
-2. **UI要件**
+2. **UI 要件**
+
    - デザインシステム準拠
    - レスポンシブ対応
-   - アクセシビリティ（WCAG準拠）
+   - アクセシビリティ（WCAG 準拠）
 
-3. **UX要件**
+3. **UX 要件**
+
    - ユーザーフロー・情報アーキテクチャ
    - パフォーマンス体感（表示速度等）
    - エラーハンドリング・フィードバック
 
 4. **測定・分析要件**
    - ユーザー行動トラッキング
-   - A/Bテスト設計
+   - A/B テスト設計
    - 成功指標（コンバージョン等）
 
 ### Phase 3: 成果物提出
+
 - 作成した仕様書を CAS ストレージに保存
-- `{$PWD}/.claude/desk/memory/outbox/product-owner-ux.outbox.ndjson` で chief-product-owner に結果報告
+- `$PWD/.claude/desk/memory/outbox/product-owner-ux.outbox.ndjson` で chief-product-owner に結果報告
 - 必要に応じて修正依頼への対応
 
 ## 出力フォーマット
 
-UX観点の仕様書（Markdown）:
+UX 観点の仕様書（Markdown）:
 
 ```markdown
 # UX Requirements - Issue #<number>
 
 ## ユーザーストーリー
+
 ### Primary Persona
+
 ### Secondary Persona
+
 ### Edge Cases
 
-## UI要件
+## UI 要件
+
 ### デザインシステム整合性
+
 ### レスポンシブ要件
+
 ### アクセシビリティ要件
 
-## UX要件
+## UX 要件
+
 ### ユーザーフロー
+
 ### パフォーマンス体感
+
 ### エラー処理・フィードバック
 
 ## 測定・分析
+
 ### トラッキング要件
-### A/Bテスト設計
+
+### A/B テスト設計
+
 ### 成功指標
 ```
 
