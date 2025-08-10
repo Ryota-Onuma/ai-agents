@@ -103,7 +103,7 @@ issue-to-pr <github_issue_url> --base <branch_name>
      - **品質基準**: TDD (t-wada 方式)、SOLID 原則、カバレッジ ≥ 85%
    - **frontend-expert**:
      - **Capabilities**: frontend-development, frontend-architecture, product-architecture, frontend-testing, tdd-methodology, solid-principles
-     - **実装範囲**: フロントエンド実装 + ユニット/統合/UI/UX/アクセシビリティテスト
+     - **実装範囲**: フロントエンド実装 + ユニット/統合/UI/UXテスト
      - **品質基準**: TDD (t-wada 方式)、SOLID 原則、React+TypeScript、カバレッジ ≥ 80%
 
 ### Phase 4: レビュー (Approval Gate)
@@ -172,7 +172,7 @@ issue-to-pr <github_issue_url> --base <branch_name>
 
 ### 実装チーム (実装・テスト一体化)
 - **backend-expert**: バックエンド実装 + ユニット/統合/API/DB/セキュリティテスト
-- **frontend-expert**: フロントエンド実装 + ユニット/統合/UI/UX/アクセシビリティテスト
+- **frontend-expert**: フロントエンド実装 + ユニット/統合/UI/UXテスト
 
 ### その他
 - **データベース移行スクリプト** (db-migration): `$PWD/.claude/desk/outputs/migrations/`

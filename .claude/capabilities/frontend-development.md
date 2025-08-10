@@ -23,11 +23,10 @@
 - バンドルサイズの最適化
 - 仮想化による大量データ対応
 
-## アクセシビリティ対応
+## ユーザビリティ向上
 
-- WCAG 2.1 AA 準拠
 - セマンティック HTML
-- ARIA 属性の適切な使用
+- 直感的なインターフェース
 - キーボードナビゲーション対応
 
 ## セキュリティ対策
@@ -42,5 +41,5 @@
 - Storybook（コンポーネントカタログ）
 - React DevTools、TypeScript Language Server
 - ESLint + Prettier
-- MSW（API Mocking）、Axe（アクセシビリティテスト）
+- MSW（API Mocking）、パフォーマンス解析
 - Web Vitals、Bundle Analyzer、Lighthouse CI

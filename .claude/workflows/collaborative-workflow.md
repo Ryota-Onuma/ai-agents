@@ -81,7 +81,7 @@
 
 - **frontend-expert**:
   - **Capabilities**: [frontend-development](../capabilities/frontend-development.md), [frontend-architecture](../capabilities/frontend-architecture.md), [product-architecture](../capabilities/product-architecture.md), [frontend-testing](../capabilities/frontend-testing.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
-  - **実施事項**: フロントエンド実装 + ユニット/統合/UI/UX/アクセシビリティテスト
+  - **実施事項**: フロントエンド実装 + ユニット/統合/UI/UXテスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、React+TypeScript、カバレッジ ≥ 80%
 
 **同期ポイント** (サブエージェント間通信プロトコル使用):
