@@ -34,9 +34,9 @@
 
 **成果物**:
 
-- **要件仕様書** (chief-product-owner): `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
-- **設計書** (chief-architect): `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md` (DB マイグレーション戦略を含む)
-- **ADR** (chief-architect): `$PWD/.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
+- **要件仕様書** (chief-product-owner): `~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
+- **設計書** (chief-architect): `~/.claude/desk/outputs/design/ISSUE-<number>.design.md` (DB マイグレーション戦略を含む)
+- **ADR** (chief-architect): `~/.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
 
 ### 2. 実装計画フェーズ
 
@@ -51,8 +51,8 @@
 
 **成果物**:
 
-- **実装計画書** (implementation-planner): `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
-- **進捗管理チェックリスト** (implementation-planner): `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
+- **実装計画書** (implementation-planner): `~/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
+- **進捗管理チェックリスト** (implementation-planner): `~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
 
 ### 3. 実装フェーズ
 
@@ -68,20 +68,20 @@
 
 - **implementation-tracker**:
   - **実施事項**: 各エージェントの完了報告受信、進捗チェックリスト更新、依存関係チェック、次タスク指示
-  - **管理ファイル**: `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` をリアルタイム更新
+  - **管理ファイル**: `~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` をリアルタイム更新
   - **協調方法**: 各実装エージェントと標準完了報告フォーマットで連携
 
 #### 並列実装・テスト一体チーム
 
 - **backend-expert**:
 
-  - **Capabilities**: [backend-development](../capabilities/backend-development.md), [backend-architecture](../capabilities/backend-architecture.md), [technical-architecture](../capabilities/technical-architecture.md), [backend-testing](../capabilities/backend-testing.md), [database-migration](../capabilities/database-migration.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
+  - **Capabilities**: [backend-development](~/.claude/capabilities/backend-development.md), [backend-architecture](~/.claude/capabilities/backend-architecture.md), [technical-architecture](~/.claude/capabilities/technical-architecture.md), [backend-testing](~/.claude/capabilities/backend-testing.md), [database-migration](~/.claude/capabilities/database-migration.md), [tdd-methodology](~/.claude/capabilities/tdd-methodology.md), [solid-principles](~/.claude/capabilities/solid-principles.md)
   - **実施事項**: バックエンド実装 + DB マイグレーション + ユニット/統合/API/データベース/セキュリティテスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、Kotlin/Go 優先、カバレッジ ≥ 85%
 
 - **frontend-expert**:
-  - **Capabilities**: [frontend-development](../capabilities/frontend-development.md), [frontend-architecture](../capabilities/frontend-architecture.md), [product-architecture](../capabilities/product-architecture.md), [frontend-testing](../capabilities/frontend-testing.md), [tdd-methodology](../capabilities/tdd-methodology.md), [solid-principles](../capabilities/solid-principles.md)
-  - **実施事項**: フロントエンド実装 + ユニット/統合/UI/UXテスト
+  - **Capabilities**: [frontend-development](~/.claude/capabilities/frontend-development.md), [frontend-architecture](~/.claude/capabilities/frontend-architecture.md), [product-architecture](~/.claude/capabilities/product-architecture.md), [frontend-testing](~/.claude/capabilities/frontend-testing.md), [tdd-methodology](~/.claude/capabilities/tdd-methodology.md), [solid-principles](~/.claude/capabilities/solid-principles.md)
+  - **実施事項**: フロントエンド実装 + ユニット/統合/UI/UX テスト
   - **品質基準**: SOLID 原則、TDD (t-wada 方式)、React+TypeScript、カバレッジ ≥ 80%
 
 **同期ポイント** (サブエージェント間通信プロトコル使用):
@@ -104,7 +104,7 @@
 
 **承認ゲート管理**:
 
-- **承認ファイル**: `$PWD/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
+- **承認ファイル**: `~/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
 - **承認条件**: **全員の `approved`** が揃った場合のみ PR 作成許可
 - **1 つでも NG** があれば PR 作成停止
 - **修正後は再度全員レビュー実施**
@@ -122,7 +122,7 @@
 
 ## エージェント間通信プロトコル
 
-プロトコル（`$PWD/.claude/desk/memory/PROTOCOL.md`）を使用してサブエージェント間通信を行う。
+プロトコル（`~/.claude/desk/memory/PROTOCOL.md`）を使用してサブエージェント間通信を行う。
 
 ### 協調ルール
 

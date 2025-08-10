@@ -24,7 +24,7 @@ tools: Read, Write, Edit, Grep, Glob
 1. **要件受領**: chief-product-owner からの requirements.md を受信・分析
 2. **チーム調整**: architect-impact、architect-product、architect-tech に作業を振り分け
 3. **統合・レビュー**: 各専門家の成果物をレビューし、技術判断・バランス調整
-4. **最終出力**: `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md` を作成
+4. **最終出力**: `~/.claude/desk/outputs/design/ISSUE-<number>.design.md` を作成
 
 ## ワークフロー
 
@@ -35,7 +35,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 ### Phase 2: 専門家への設計依頼
 
-architect-impact からの影響調査結果を受け、`$PWD/.claude/desk/memory/PROTOCOL.md` のプロトコルに従い並列依頼:
+architect-impact からの影響調査結果を受け、`~/.claude/desk/memory/PROTOCOL.md` のプロトコルに従い並列依頼:
 
 - **architect-product**: プロダクト観点の設計（UX/ロードマップ/価値仮説との整合）
 - **architect-tech**: 技術観点の設計（性能/可用性/セキュリティ/観測性/運用の最適化）
@@ -50,7 +50,7 @@ architect-impact からの影響調査結果を受け、`$PWD/.claude/desk/memor
 
 ## 成果物フォーマット
 
-`$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md`:
+`~/.claude/desk/outputs/design/ISSUE-<number>.design.md`:
 
 ```markdown
 # Design Document - Issue #<number>
@@ -90,4 +90,4 @@ architect-impact からの影響調査結果を受け、`$PWD/.claude/desk/memor
 ## ADR（Architecture Decision Records）
 ```
 
-必要に応じて `$PWD/.claude/desk/outputs/adr/ADR-<date>-<slug>.md` に重要な技術判断を ADR として記録。
+必要に応じて `~/.claude/desk/outputs/adr/ADR-<date>-<slug>.md` に重要な技術判断を ADR として記録。

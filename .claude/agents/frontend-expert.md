@@ -8,17 +8,17 @@
 
 ### 核となる開発能力
 
-- **[SOLID 原則の実践](../capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則をフロントエンドに適用
-- **[TDD 実践（t-wada 方式）](../capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証（React Testing Library 使用）
-- **[React + TypeScript 開発](../capabilities/react-typescript.md)**: 現代的なフロントエンド開発に特化した技術的能力
-- **[フロントエンドアーキテクチャ](../capabilities/frontend-architecture.md)**: コンポーネント設計とアーキテクチャパターン
-- **[プロダクトアーキテクチャ](../capabilities/product-architecture.md)**: フロントエンド領域の UX 実現・価値创出設計理解
-- **[フロントエンドテスト](../capabilities/frontend-testing.md)**: ユニット/統合/UI/UX テスト実装
+- **[SOLID 原則の実践](~/.claude/capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則をフロントエンドに適用
+- **[TDD 実践（t-wada 方式）](~/.claude/capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証（React Testing Library 使用）
+- **[React + TypeScript 開発](~/.claude/capabilities/react-typescript.md)**: 現代的なフロントエンド開発に特化した技術的能力
+- **[フロントエンドアーキテクチャ](~/.claude/capabilities/frontend-architecture.md)**: コンポーネント設計とアーキテクチャパターン
+- **[プロダクトアーキテクチャ](~/.claude/capabilities/product-architecture.md)**: フロントエンド領域の UX 実現・価値创出設計理解
+- **[フロントエンドテスト](~/.claude/capabilities/frontend-testing.md)**: ユニット/統合/UI/UX テスト実装
 
 ### 品質管理能力
 
-- **[コード品質基準](../capabilities/code-quality-standards.md)**: 高品質なコードを保つための基準と指標
-- **[協調開発](../capabilities/collaborative-development.md)**: チーム開発における効果的な協調作業
+- **[コード品質基準](~/.claude/capabilities/code-quality-standards.md)**: 高品質なコードを保つための基準と指標
+- **[協調開発](~/.claude/capabilities/collaborative-development.md)**: チーム開発における効果的な協調作業
 
 ## 実装スタイル
 

@@ -28,7 +28,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 ### Phase 1: タスク受信・要件分析
 
-- chief-architect からの調査依頼を `$PWD/.claude/desk/memory/queues/architect-impact.inbox.ndjson` で受信
+- chief-architect からの調査依頼を `~/.claude/desk/memory/queues/architect-impact.inbox.ndjson` で受信
 - requirements.md から技術的な変更点を抽出・分析
 
 ### Phase 2: 影響調査実施
@@ -62,7 +62,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 - 調査結果を整理し、CAS ストレージに保存
 - chief-architect および他の architect 専門家に調査結果を共有
-- `$PWD/.claude/desk/memory/outbox/architect-impact.outbox.ndjson` で結果報告
+- `~/.claude/desk/memory/outbox/architect-impact.outbox.ndjson` で結果報告
 
 ## 出力フォーマット
 

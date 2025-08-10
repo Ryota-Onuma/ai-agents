@@ -22,8 +22,8 @@ planning フェーズの成果物（requirements.md、design.md）を受け取�
 
 ### Phase 1: 成果物読み込み・分析
 
-- `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を読み込み
-- `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md` を読み込み
+- `~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を読み込み
+- `~/.claude/desk/outputs/design/ISSUE-<number>.design.md` を読み込み
 - 実装すべき機能・コンポーネント・インフラを抽出
 
 ### Phase 2: タスク分解・依存関係分析
@@ -52,8 +52,8 @@ planning フェーズの成果物（requirements.md、design.md）を受け取�
 
 以下の 2 つのファイルを作成:
 
-1. `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md` (実装計画)
-2. `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` (進捗チェックリスト)
+1. `~/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md` (実装計画)
+2. `~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` (進捗チェックリスト)
 
 ````markdown
 # Implementation Plan - Issue #<number>
@@ -139,7 +139,7 @@ graph TD
 
 ### 進捗チェックリスト初期化
 
-同時に `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` を作成し、implementation-tracker が管理する進捗チェックリストを初期化:
+同時に `~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md` を作成し、implementation-tracker が管理する進捗チェックリストを初期化:
 
 ```markdown
 # Implementation Progress - Issue #<number>

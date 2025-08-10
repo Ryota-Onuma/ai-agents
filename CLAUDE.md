@@ -26,9 +26,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### エージェント設定管理
 
-- .claude/agents/ ディレクトリ内の設定ファイル管理
+- ~/.claude/agents/ ディレクトリ内の設定ファイル管理
 - Markdown ベースの設定の構造化
 - エージェント間の一貫性保持
-- プロトコル($PWD/memory/PROTOCOL.md)を用いて、サブエージェント間は通信を行う。
+- プロトコル(~/memory/PROTOCOL.md)を用いて、サブエージェント間は通信を行う。
 
 ---

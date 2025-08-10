@@ -24,7 +24,7 @@ implementation 完了後の最終工程として、以下を実施:
 
 1. **引数解析**: `$ARGUMENTS` から `--base` ブランチを解析（既定=main）
 2. **承認チェック**: 必須承認者の承認状況を確認
-   - 対象ファイル: `$PWD/.claude/desk/outputs/approvals/ISSUE-<number>.approvals.md`
+   - 対象ファイル: `~/.claude/desk/outputs/approvals/ISSUE-<number>.approvals.md`
    - 必須承認者: planner, chief-architect, reviewer, implementation-tracker
    - 条件付き: db-migration（DB 変更時のみ必須）
 3. **未コミット変更確認**: 作業中の変更がある場合は方針を確認
@@ -38,13 +38,15 @@ implementation 完了後の最終工程として、以下を実施:
 ### Phase 3: コミット整形
 
 1. **Conventional Commits**: コミットメッセージを規約準拠に整理
+
    ```
    <type>(<scope>): <description>
-   
+
    [optional body]
-   
+
    [optional footer(s)]
    ```
+
 2. **Squash 判定**: 必要に応じて関連コミットを統合
 3. **メッセージ検証**: Issue 番号、変更内容の整合性確認
 
@@ -55,7 +57,7 @@ implementation 完了後の最終工程として、以下を実施:
    ```bash
    gh pr create \
      --title "<conventional-title>" \
-     --body-file "$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md" \
+     --body-file "~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md" \
      --base <BASE> \
      --head feature/issue-<number>-<slug>
    ```
@@ -69,17 +71,17 @@ implementation 完了後の最終工程として、以下を実施:
 
 ### 必須承認者
 
-| 承認者 | 確認項目 | ファイル |
-|--------|----------|----------|
-| planner | 要件・計画の妥当性 | `ISSUE-<number>.requirements.md` |
-| chief-architect | 設計・アーキテクチャ統括 | `ISSUE-<number>.design.md` |
-| reviewer | コード品質・規約準拠 | `ISSUE-<number>.review.md` |
-| implementation-tracker | 実装完了・品質確認 | `ISSUE-<number>.progress.md` |
+| 承認者                 | 確認項目                 | ファイル                         |
+| ---------------------- | ------------------------ | -------------------------------- |
+| planner                | 要件・計画の妥当性       | `ISSUE-<number>.requirements.md` |
+| chief-architect        | 設計・アーキテクチャ統括 | `ISSUE-<number>.design.md`       |
+| reviewer               | コード品質・規約準拠     | `ISSUE-<number>.review.md`       |
+| implementation-tracker | 実装完了・品質確認       | `ISSUE-<number>.progress.md`     |
 
 ### 条件付き承認者
 
-| 承認者 | 条件 | 確認項目 |
-|--------|------|----------|
+| 承認者       | 条件              | 確認項目                       |
+| ------------ | ----------------- | ------------------------------ |
 | db-migration | DB スキーマ変更時 | マイグレーション・ロールバック |
 
 ### 承認ステータス形式
@@ -88,6 +90,7 @@ implementation 完了後の最終工程として、以下を実施:
 # Approvals Status - Issue #<number>
 
 ## 承認サマリー
+
 - **必須承認**: 4/4 ✅
 - **条件付き承認**: 1/1 ✅ (DB 変更あり)
 - **PR 作成可能**: ✅
@@ -149,6 +152,6 @@ Status: Ready for Review
 
 ### 作成ファイル
 
-- `$PWD/.claude/desk/outputs/pr/ISSUE-<number>.pr-info.md`: PR 詳細情報
+- `~/.claude/desk/outputs/pr/ISSUE-<number>.pr-info.md`: PR 詳細情報
 
 このエージェントにより、implementation 完了から PR 作成までが自動化され、品質ゲートを通過した変更のみが確実に GitHub に反映されます。

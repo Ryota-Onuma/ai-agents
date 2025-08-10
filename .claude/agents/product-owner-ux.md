@@ -22,7 +22,7 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 
 ### Phase 1: タスク受信
 
-- chief-product-owner からの作業依頼を `$PWD/.claude/desk/memory/queues/product-owner-ux.inbox.ndjson` で受信
+- chief-product-owner からの作業依頼を `~/.claude/desk/memory/queues/product-owner-ux.inbox.ndjson` で受信
 - 添付された初期要件資料を CAS ストレージから取得・確認
 
 ### Phase 2: UX 要件策定
@@ -55,7 +55,7 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 ### Phase 3: 成果物提出
 
 - 作成した仕様書を CAS ストレージに保存
-- `$PWD/.claude/desk/memory/outbox/product-owner-ux.outbox.ndjson` で chief-product-owner に結果報告
+- `~/.claude/desk/memory/outbox/product-owner-ux.outbox.ndjson` で chief-product-owner に結果報告
 - 必要に応じて修正依頼への対応
 
 ## 出力フォーマット

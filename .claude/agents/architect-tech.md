@@ -30,7 +30,7 @@ tools: Read, Write, Edit, Grep, Glob
 
 ### Phase 1: タスク受信・影響調査確認
 
-- chief-architect からの設計依頼を `$PWD/.claude/desk/memory/queues/architect-tech.inbox.ndjson` で受信
+- chief-architect からの設計依頼を `~/.claude/desk/memory/queues/architect-tech.inbox.ndjson` で受信
 - architect-impact からの影響調査結果を参照・分析
 
 ### Phase 2: 技術観点設計
@@ -75,7 +75,7 @@ tools: Read, Write, Edit, Grep, Glob
 ### Phase 3: 成果物提出
 
 - 設計書を CAS ストレージに保存
-- `$PWD/.claude/desk/memory/outbox/architect-tech.outbox.ndjson` で chief-architect に結果報告
+- `~/.claude/desk/memory/outbox/architect-tech.outbox.ndjson` で chief-architect に結果報告
 - 必要に応じて他の architect との設計整合性確認
 
 ## 出力フォーマット

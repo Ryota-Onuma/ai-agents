@@ -15,7 +15,7 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 1. **初期要件整理**: GitHub Issue/過去議論を読み、ざっくりとした要件をまとめる
 2. **チーム調整**: product-owner-ux、product-owner-tech に作業を振り分け
 3. **統合・レビュー**: 各専門家の成果物をレビューし、修正・バランス調整
-4. **最終出力**: `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を作成
+4. **最終出力**: `~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md` を作成
 
 ## ワークフロー
 
@@ -26,7 +26,7 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 
 ### Phase 2: 専門家への作業依頼
 
-- `$PWD/.claude/desk/memory/PROTOCOL.md` のプロトコルに従い、以下に並列依頼:
+- `~/.claude/desk/memory/PROTOCOL.md` のプロトコルに従い、以下に並列依頼:
   - **product-owner-ux**: UX/ユーザー体験特化の仕様書作成
   - **product-owner-tech**: 技術特化の仕様書作成
 - 必要な資料は CAS ストレージに保存し、attachments で参照
@@ -39,7 +39,7 @@ tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 
 ## 成果物フォーマット
 
-`$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`:
+`~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`:
 
 ```markdown
 # Requirements Document - Issue #<number>

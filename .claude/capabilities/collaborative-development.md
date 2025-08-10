@@ -26,12 +26,12 @@
 ### 承認ゲートシステム
 
 - reviewer、chief-product-owner、chief-architect、db-migration による多角的レビュー
-- `$PWD/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md` での承認管理
+- `~/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md` での承認管理
 - 全員の `approved` 状態確認後の PR 作成
 
 ### サブエージェント間通信でのフィードバック
 
-- `$PWD/.claude/desk/memory/PROTOCOL.md` で定義された通信方式
+- `~/.claude/desk/memory/PROTOCOL.md` で定義された通信方式
 - CAS ストレージでの成果物共有
 - 非同期メッセージングでの効率的な情報交換
 
@@ -48,7 +48,7 @@
 - 明確で簡潔な情報共有
 - 問題の早期発見と報告
 - 建設的なフィードバック
-- `$PWD/.claude/desk/outputs` での体系化された成果物管理
+- `~/.claude/desk/outputs` での体系化された成果物管理
 
 ### 知識共有・継続改善
 

@@ -86,8 +86,8 @@ issue-to-pr <github_issue_url> --base <branch_name>
    - タスク分解と依存関係特定
    - 各タスクへの最適エージェント割り当て
    - 実装順序決定と並列実行可能性判定
-   - 成果物: `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
-   - 進捗管理用チェックリスト: `$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
+   - 成果物: `~/.claude/desk/outputs/implementation/ISSUE-<number>.implementation-plan.md`
+   - 進捗管理用チェックリスト: `~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`
 
 ### Phase 3: 実装 (Parallel with Progress Tracking)
 1. **implementation-tracker**: 進捗管理・タスク完了確認
@@ -118,7 +118,7 @@ issue-to-pr <github_issue_url> --base <branch_name>
 ## エージェント協調ルール
 
 ### 情報共有・非同期通信
-- **サブエージェント間通信プロトコル** (`$PWD/.claude/desk/memory/PROTOCOL.md`) 活用
+- **サブエージェント間通信プロトコル** (`~/.claude/desk/memory/PROTOCOL.md`) 活用
 - **CASストレージ**: 大きな成果物を `cas/sha256/<hash>` で共有
 - **NDJSONメッセージング**: `queues/*.inbox.ndjson`/`outbox/*.outbox.ndjson`
 - **barriersファイル**: フェーズ同期ポイント管理
@@ -146,7 +146,7 @@ issue-to-pr <github_issue_url> --base <branch_name>
 - **Issue存在確認**: アクセス可能性とステータス確認
 - **ベースブランチ存在確認**: 指定ブランチの存在と最新性
 - **リポジトリアクセス権確認**: push権限、PR作成権限
-- **サブエージェント間通信環境**: `$PWD/.claude/desk/memory/` ディレクトリ構造確認
+- **サブエージェント間通信環境**: `~/.claude/desk/memory/` ディレクトリ構造確認
 
 ### 復旧戦略・障害対応
 - **barriersファイル** でのフェーズ単位再実行
@@ -159,25 +159,25 @@ issue-to-pr <github_issue_url> --base <branch_name>
 ## 成果物
 
 ### プロダクトオーナーチーム
-- **要件仕様書** (chief-product-owner): `$PWD/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
+- **要件仕様書** (chief-product-owner): `~/.claude/desk/outputs/requirements/ISSUE-<number>.requirements.md`
 - **UX特化仕様** (product-owner-ux): UX観点からの詳細仕様
 - **技術特化仕様** (product-owner-tech): 技術観点からの詳細仕様
 
 ### アーキテクトチーム
-- **設計書** (chief-architect): `$PWD/.claude/desk/outputs/design/ISSUE-<number>.design.md`
+- **設計書** (chief-architect): `~/.claude/desk/outputs/design/ISSUE-<number>.design.md`
 - **影響調査レポート** (architect-impact): 既存システムへの影響分析
 - **プロダクト観点設計** (architect-product): UX/価値创出重視の設計
 - **技術観点設計** (architect-tech): 技術品質/運用性重視の設計
-- **ADR** (chief-architect): `$PWD/.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
+- **ADR** (chief-architect): `~/.claude/desk/outputs/adr/ADR-<date>-<slug>.md`
 
 ### 実装チーム (実装・テスト一体化)
 - **backend-expert**: バックエンド実装 + ユニット/統合/API/DB/セキュリティテスト
 - **frontend-expert**: フロントエンド実装 + ユニット/統合/UI/UXテスト
 
 ### その他
-- **データベース移行スクリプト** (db-migration): `$PWD/.claude/desk/outputs/migrations/`
+- **データベース移行スクリプト** (db-migration): `~/.claude/desk/outputs/migrations/`
 - **レビュー報告書** (reviewer): コード品質・規約・命名・複雑度チェック
-- **承認ゲート管理** (pr-bot): `$PWD/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
+- **承認ゲート管理** (pr-bot): `~/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
 - **GitHub PR** (pr-bot): Issue紐付け、ラベル/レビュワー設定
 
 ## ワークフロー設定
@@ -185,24 +185,24 @@ issue-to-pr <github_issue_url> --base <branch_name>
 このコマンドは以下の設定ファイルを参照して動作します：
 
 ### 協調ワークフロー
-- **設定ファイル**: `$PWD/.claude/workflows/collaborative-workflow.md`
+- **設定ファイル**: `~/.claude/workflows/collaborative-workflow.md`
 - **役割**: エージェント間の協調ルール、承認ゲート、品質基準を定義
 
 ### エージェント設定
 各フェーズで使用されるエージェントの詳細設定：
-- `$PWD/.claude/agents/chief-product-owner.md`
-- `$PWD/.claude/agents/product-owner-ux.md`
-- `$PWD/.claude/agents/product-owner-tech.md`
-- `$PWD/.claude/agents/chief-architect.md`
-- `$PWD/.claude/agents/architect-impact.md`
-- `$PWD/.claude/agents/architect-product.md`
-- `$PWD/.claude/agents/architect-tech.md`
-- `$PWD/.claude/agents/pr-bot.md`
-- `$PWD/.claude/agents/backend-expert.md`
-- `$PWD/.claude/agents/frontend-expert.md`
-- `$PWD/.claude/agents/reviewer.md`
-- `$PWD/.claude/agents/implementation-planner.md`
-- `$PWD/.claude/agents/implementation-tracker.md`
+- `~/.claude/agents/chief-product-owner.md`
+- `~/.claude/agents/product-owner-ux.md`
+- `~/.claude/agents/product-owner-tech.md`
+- `~/.claude/agents/chief-architect.md`
+- `~/.claude/agents/architect-impact.md`
+- `~/.claude/agents/architect-product.md`
+- `~/.claude/agents/architect-tech.md`
+- `~/.claude/agents/pr-bot.md`
+- `~/.claude/agents/backend-expert.md`
+- `~/.claude/agents/frontend-expert.md`
+- `~/.claude/agents/reviewer.md`
+- `~/.claude/agents/implementation-planner.md`
+- `~/.claude/agents/implementation-tracker.md`
 
 ## 実行設定
 

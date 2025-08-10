@@ -43,7 +43,7 @@ implementation フェーズでの進捗管理として、以下を実施:
 
 ### 進捗チェックリスト
 
-`$PWD/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`:
+`~/.claude/desk/outputs/implementation/ISSUE-<number>.progress.md`:
 
 ```markdown
 # Implementation Progress - Issue #<number>

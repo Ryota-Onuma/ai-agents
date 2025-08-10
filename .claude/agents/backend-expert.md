@@ -8,18 +8,18 @@
 
 ### 核となる開発能力
 
-- **[SOLID 原則の実践](../capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則を実装に適用
-- **[TDD 実践（t-wada 方式）](../capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証
-- **[Kotlin 開発](../capabilities/kotlin-development.md)**: 現代的なバックエンド開発に特化した技術的能力
-- **[バックエンドアーキテクチャ](../capabilities/backend-architecture.md)**: API 設計とデータベース連携パターン
-- **[技術アーキテクチャ](../capabilities/technical-architecture.md)**: バックエンド領域の技術的品質・運用性設計理解
-- **[バックエンドテスト](../capabilities/backend-testing.md)**: ユニット/統合/API/DB/セキュリティテスト実装
-- **[データベースマイグレーション](../capabilities/database-migration.md)**: 具体的なマイグレーションスクリプト実装・実行
+- **[SOLID 原則の実践](~/.claude/capabilities/solid-principles.md)**: オブジェクト指向設計の 5 つの基本原則を実装に適用
+- **[TDD 実践（t-wada 方式）](~/.claude/capabilities/tdd-methodology.md)**: テスト駆動開発による品質保証
+- **[Kotlin 開発](~/.claude/capabilities/kotlin-development.md)**: 現代的なバックエンド開発に特化した技術的能力
+- **[バックエンドアーキテクチャ](~/.claude/capabilities/backend-architecture.md)**: API 設計とデータベース連携パターン
+- **[技術アーキテクチャ](~/.claude/capabilities/technical-architecture.md)**: バックエンド領域の技術的品質・運用性設計理解
+- **[バックエンドテスト](~/.claude/capabilities/backend-testing.md)**: ユニット/統合/API/DB/セキュリティテスト実装
+- **[データベースマイグレーション](~/.claude/capabilities/database-migration.md)**: 具体的なマイグレーションスクリプト実装・実行
 
 ### 品質管理能力
 
-- **[コード品質基準](../capabilities/code-quality-standards.md)**: 高品質なコードを保つための基準と指標
-- **[協調開発](../capabilities/collaborative-development.md)**: チーム開発における効果的な協調作業
+- **[コード品質基準](~/.claude/capabilities/code-quality-standards.md)**: 高品質なコードを保つための基準と指標
+- **[協調開発](~/.claude/capabilities/collaborative-development.md)**: チーム開発における効果的な協調作業
 
 ## 実装スタイル
 
@@ -49,4 +49,4 @@
 - **段階的移行**: expand→migrate→contract の各フェーズ実装
 - **ロールバック手順**: 安全な巻き戻し処理とデータ整合性確保
 - **テスト・検証**: マイグレーション実行前後の整合性テスト
-- **成果物配置**: `db/migrations/` と `$PWD/.claude/desk/outputs/migrations/` に生成
+- **成果物配置**: `db/migrations/` と `~/.claude/desk/outputs/migrations/` に生成
