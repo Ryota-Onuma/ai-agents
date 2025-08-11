@@ -38,7 +38,6 @@ sequenceDiagram
     participant IT as implementation-tracker
     participant BE as backend-expert
     participant FE as frontend-expert
-    participant RV as reviewer
     participant GH as GitHub
 
     User->>PR: issue-to-pr-universal <issue_url> [--base]
@@ -82,8 +81,6 @@ sequenceDiagram
     IT-->>PR: 実装フェーズ完了
 
     Note over RV,CA: Phase 4: レビュー（承認ゲート）
-    PR->>RV: コードレビュー依頼
-    RV-->>PR: レビュー報告書
     PR->>CPO: 要件承認依頼
     CPO-->>PR: 要件承認結果
     PR->>CA: アーキ承認依頼
@@ -255,16 +252,7 @@ sequenceDiagram
 
 **全員承認必須** - 1 つでも NG があれば PR 作成停止
 
-1. **reviewer エージェントを呼び出し**:
-
-   ```
-   エージェント: reviewer
-   入力: 全実装コード
-   タスク: コード品質、規約、命名、複雑度チェック
-   出力: レビュー報告書
-   ```
-
-2. **chief-product-owner エージェントを呼び出し**:
+1. **chief-product-owner エージェントを呼び出し**:
 
    ```
    エージェント: chief-product-owner
@@ -273,7 +261,7 @@ sequenceDiagram
    出力: 要件承認結果
    ```
 
-3. **chief-architect エージェントを呼び出し**:
+2. **chief-architect エージェントを呼び出し**:
 
    ```
    エージェント: chief-architect
@@ -282,7 +270,7 @@ sequenceDiagram
    出力: アーキテクチャ承認結果
    ```
 
-4. **承認結果の統合**:
+3. **承認結果の統合**:
    ```
    入力: レビュー報告書, 要件承認結果, アーキテクチャ承認結果
    判定: 全て承認の場合のみ次フェーズへ進行

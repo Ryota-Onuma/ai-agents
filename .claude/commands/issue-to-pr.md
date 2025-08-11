@@ -108,9 +108,8 @@ issue-to-pr <github_issue_url> --base <branch_name>
 
 ### Phase 4: レビュー (Approval Gate)
 **全員承認必須** - 1つでもNGがあればPR作成停止
-1. **reviewer**: コード品質、規約、命名、複雑度
-2. **chief-product-owner**: 要件充足性、requirements.md整合性
-3. **chief-architect**: アーキテクチャ整合性、design.md準拠、DB マイグレーション戦略適合性
+1. **chief-product-owner**: 要件充足性、requirements.md整合性
+2. **chief-architect**: アーキテクチャ整合性、design.md準拠、DB マイグレーション戦略適合性
 
 ### Phase 5: 統合
 1. **pr-bot**: PR作成、Issue紐付け、CI/CD実行
@@ -119,17 +118,17 @@ issue-to-pr <github_issue_url> --base <branch_name>
 
 ### 情報共有・非同期通信
 - **サブエージェント間通信プロトコル** (`~/.claude/desk/memory/PROTOCOL.md`) 活用
-- **CASストレージ**: 大きな成果物を `cas/sha256/<hash>` で共有
-- **NDJSONメッセージング**: `queues/*.inbox.ndjson`/`outbox/*.outbox.ndjson`
+- **CASストレージ**: 大きな成果物を `~/.claude/desk/memory/cas/sha256/<hash>` で共有
+- **NDJSONメッセージング**: `~/.claude/desk/memory/queues/*.inbox.ndjson`/`outbox/*.outbox.ndjson`
 - **barriersファイル**: フェーズ同期ポイント管理
 - 依存関係を明示し、ブロッカーを報告
 - 他エージェントの成果物への直接変更禁止
 
 ### 品質基準・Capabilities活用
-- **SOLID原則** ([solid-principles.md](.claude/capabilities/solid-principles.md)): 全実装で厳守
-- **TDD** ([tdd-methodology.md](.claude/capabilities/tdd-methodology.md)): t-wada方式（Red→Green→Refactor）
-- **コード品質基準** ([code-quality-standards.md](.claude/capabilities/code-quality-standards.md)): カバレッジ>80%、複雑度<10
-- **協調開発** ([collaborative-development.md](.claude/capabilities/collaborative-development.md)): チーム連携・継続改善
+- **SOLID原則** ([solid-principles.md](~/.claude/capabilities/solid-principles.md)): 全実装で厳守
+- **TDD** ([tdd-methodology.md](~/.claude/capabilities/tdd-methodology.md)): t-wada方式（Red→Green→Refactor）
+- **コード品質基準** ([code-quality-standards.md](~/.claude/capabilities/code-quality-standards.md)): カバレッジ>80%、複雑度<10
+- **協調開発** ([collaborative-development.md](~/.claude/capabilities/collaborative-development.md)): チーム連携・継続改善
 - **アーキテクチャ** (capabilities/*-architecture.md): 各エージェントが専門領域で高度な設計理解力
 - **セキュリティ**: 機密情報ログ出力禁止、脆弱性対策
 
@@ -175,8 +174,6 @@ issue-to-pr <github_issue_url> --base <branch_name>
 - **frontend-expert**: フロントエンド実装 + ユニット/統合/UI/UXテスト
 
 ### その他
-- **データベース移行スクリプト** (db-migration): `~/.claude/desk/outputs/migrations/`
-- **レビュー報告書** (reviewer): コード品質・規約・命名・複雑度チェック
 - **承認ゲート管理** (pr-bot): `~/.claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md`
 - **GitHub PR** (pr-bot): Issue紐付け、ラベル/レビュワー設定
 
@@ -200,7 +197,6 @@ issue-to-pr <github_issue_url> --base <branch_name>
 - `~/.claude/agents/pr-bot.md`
 - `~/.claude/agents/backend-expert.md`
 - `~/.claude/agents/frontend-expert.md`
-- `~/.claude/agents/reviewer.md`
 - `~/.claude/agents/implementation-planner.md`
 - `~/.claude/agents/implementation-tracker.md`
 
@@ -257,7 +253,7 @@ phases:
       capabilities: [backend-development, frontend-development, backend-testing, frontend-testing, database-migration, backend-architecture, frontend-architecture, product-architecture, technical-architecture, solid-principles, tdd-methodology]
 
   review:
-    agents: [reviewer, chief-product-owner, chief-architect]
+    agents: [chief-product-owner, chief-architect]
     execution: parallel
     approval_gate: all_required
     approval_file: ".claude/desk/outputs/reviews/APPROVALS-ISSUE-<number>.md"
