@@ -3,83 +3,21 @@ name: gemini-reviewer
 description: Gemini MCPを使用し、レビューを行う
 ---
 
-## 入力
+## 前提 / Inputs
 
-- **PR**: `$ARGUMENTS`（PR 番号、URL、またはフルパス）
-- **リポジトリ**: `--repo <owner/repo>`（省略時は現在のディレクトリから自動検出）
-
----
-
-## フェーズ 0：前提条件の自動確認（実行）
-
-### 0-1. GitHub CLI 認証状態確認
-
-```bash
-gh auth status
-```
-
-### 0-2. MCP サーバー接続状況確認（Gemini)
-
-```bash
-claude mcp get gemini
-```
-
-### 0-3. 対象リポジトリアクセス権確認
-
-```bash
-# リポジトリが指定されている場合
-gh repo view $REPO_URL
-
-# 指定がない場合、カレントから自動検出
-gh repo view
-```
-
-### 0-4. MCP ツール検出（動的）
-
-- "review", "pr", "analyze" を含むツール名を探索。見つからなければ、Task tool へフォールバック。
+- このエージェントは `.claude/commands/ai-team-pr-review.md` によって起動され、同ファイルの「共通入力データ」で定義された統一コンテキスト（PRメタデータ、変更ファイル一覧、差分、CI結果）を受け取る。
+- 個別に GitHub CLI 認証・リポジトリ特定・PR情報の再取得は行わない（オーケストレーター側で完了済み）。
 
 ---
 
-## フェーズ 1：リポジトリ特定（実行）
-
-```bash
-# リポジトリが明示的に指定されている場合
-if [ -n "$REPO_OPTION" ]; then
-  REPO_FLAG="--repo $REPO_OPTION"
-else
-  # 現在のディレクトリから自動検出
-  CURRENT_REPO=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
-  REPO_FLAG="--repo $CURRENT_REPO"
-fi
-```
-
----
-
-## フェーズ 2：PR コンテキスト取得（実行・保存）
-
-```bash
-# PR メタデータ(JSON)
-gh pr view "$ARGUMENTS" $REPO_FLAG \
-  --json number,title,author,baseRefName,headRefName,isDraft,mergeable,additions,deletions,changedFiles,url,createdAt,updatedAt,labels,body
-
-# 変更ファイル一覧
-gh pr diff "$ARGUMENTS" $REPO_FLAG --name-only --color=never
-
-# 差分（unified diff）
-gh pr diff "$ARGUMENTS" $REPO_FLAG --color=never
-
-# CI チェック（要約）
-gh pr checks "$ARGUMENTS" $REPO_FLAG
-```
-
----
+<!-- 共通の前提・入力はコマンド側で取得済みのため、本エージェントでは再取得しない -->
 
 ## フェーズ 3: Gemini MCP を用いたレビュー
 
-1. **前提条件チェック**（フェーズ 0 の実施・対処）
-2. **リポジトリ特定**（フェーズ 1）
-3. **要約**：PR の目的・影響範囲・変更点（主要ファイル/ディレクトリ、追加/削除/変更の傾向）
-4. **影響範囲の調査**：差分から影響が及ぶ領域を Serena MCP を用いて列挙
+1. **共通コンテキストの受領・確認**（コマンド側で取得済み）
+2. **要約**：PR の目的・影響範囲・変更点（主要ファイル/ディレクトリ、追加/削除/変更の傾向）
+3. **影響範囲の調査**：差分から影響が及ぶ領域を列挙
+4. **MCP ツール検出（必要時）**："review"/"pr"/"analyze" を含むツール名を探索。見つからなければ Task tool へフォールバック。
 5. **Gemini MCP を用いてレビュー**（具体指摘）
    - 観点
      - 正当性（仕様充足、境界条件、失敗系）
@@ -91,11 +29,7 @@ gh pr checks "$ARGUMENTS" $REPO_FLAG
 
 ## フェーズ 4: レビュー内容の出力
 
-### 通常コメントの出力フォーマット例
-
-```markdown
-## レビュー結果 / Review Results by Reviewd by Gemini🤖
-
+出力は `.claude/commands/ai-team-pr-review.md` の「レビューフォーマット要求（共通）」に準拠すること。個別フォーマットの重複定義は避ける。
 ### 概要 / Summary
 
 この PR は[機能名]の実装に関するものです。全体的に良い実装ですが、いくつかの改善点があります。
