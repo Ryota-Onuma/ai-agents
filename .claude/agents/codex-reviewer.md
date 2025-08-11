@@ -5,7 +5,7 @@ description: Codex MCPを使用し、レビューを行う
 
 ## 前提 / Inputs
 
-- このエージェントは `.claude/commands/ai-team-pr-review.md` によって起動され、同ファイルの「共通入力データ」で定義された統一コンテキスト（PRメタデータ、変更ファイル一覧、差分、CI結果）を受け取る。
+- このエージェントは `.claude/commands/pr-review-by-ai-team-parallel.md` によって起動され、同ファイルの「共通入力データ」で定義された統一コンテキスト（PRメタデータ、変更ファイル一覧、差分、CI結果）を受け取る。
 - 個別に GitHub CLI 認証・リポジトリ特定・PR情報の再取得は行わない（オーケストレーター側で完了済み）。
 
 ---
@@ -29,7 +29,7 @@ description: Codex MCPを使用し、レビューを行う
 
 ## フェーズ 4: レビュー内容の出力
 
-出力は `.claude/commands/ai-team-pr-review.md` の「レビューフォーマット要求（共通）」に準拠すること。個別フォーマットの重複定義は避ける。
+出力は `.claude/commands/pr-review-by-ai-team-parallel.md` の「レビューフォーマット要求（共通）」に準拠すること。個別フォーマットの重複定義は避ける。
 
 # 制約
 

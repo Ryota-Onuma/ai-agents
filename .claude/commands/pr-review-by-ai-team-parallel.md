@@ -327,13 +327,13 @@ This PR implements [feature name]. Here are the integrated results from parallel
 
 ```bash
 # 現在リポジトリのPRを番号指定
-claude ai-team-pr-review 123
+claude pr-review-by-ai-team-parallel 123
 
 # PR URL指定
-claude ai-team-pr-review https://github.com/owner/repo/pull/123
+claude pr-review-by-ai-team-parallel https://github.com/owner/repo/pull/123
 
 # 特定リポジトリを明示
-claude ai-team-pr-review 123 --repo owner/repo
+claude pr-review-by-ai-team-parallel 123 --repo owner/repo
 ```
 
 ---
