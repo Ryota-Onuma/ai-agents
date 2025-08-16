@@ -1,6 +1,6 @@
 # PostgreSQL MCP Server
 
-A Model Context Protocol (MCP) server for PostgreSQL database operations. This server provides seamless access to multiple PostgreSQL databases with CRUD operations through the MCP protocol.
+A Model Context Protocol (MCP) server for PostgreSQL database operations written in Go. This server provides seamless access to multiple PostgreSQL databases with CRUD operations through the MCP protocol.
 
 ## Features
 
@@ -9,48 +9,50 @@ A Model Context Protocol (MCP) server for PostgreSQL database operations. This s
 - 🐳 **Docker Ready**: Comes with Docker Compose configuration for easy setup
 - 🔍 **Schema Introspection**: List tables and describe table structures
 - 🔧 **Connection Management**: Easy connection switching and management
-- 📊 **Resource Support**: MCP resource support for connection information
+- ⚡ **High Performance**: Written in Go for optimal performance
+- 🔒 **SQL Injection Protection**: Parameterized queries with identifier validation
 
 ## Quick Start
 
 ### 1. Setup Environment
 
 ```bash
-# Clone or create the project
+# Clone or navigate to the project
 cd mcp/postgresql-mcp
 
-# Install dependencies
-pip install -r requirements.txt
+# Install Go dependencies
+make deps
 
-# Copy and configure environment
-cp .env.example .env
-# Edit .env with your database connection strings
+# Build the project
+make build
 ```
 
 ### 2. Start PostgreSQL with Docker Compose
 
 ```bash
 # Start the databases
-docker-compose -f docker-compose.example.yml up -d
+docker-compose up -d
 
 # Verify databases are running
-docker-compose -f docker-compose.example.yml ps
+docker-compose ps
 ```
 
 ### 3. Run the MCP Server
 
 ```bash
-# Run the server
-python main.py
+# Run the server directly
+make run
+
+# Or run the built binary
+./bin/postgresql-mcp
 ```
 
 ### 4. Test the Connection
 
-The server will automatically connect to databases specified in environment variables:
-- `POSTGRESQL_DEFAULT_URL`
-- `POSTGRESQL_PRIMARY_URL` 
-- `POSTGRESQL_SECONDARY_URL`
-- `POSTGRESQL_ANALYTICS_URL`
+The server supports environment variable for database URLs:
+- `POSTGRESQL_URLS`: Comma-separated list of PostgreSQL connection URLs
+
+The server will automatically extract database names from the URLs and create named connections.
 
 ## Available Tools
 
@@ -64,67 +66,102 @@ The server will automatically connect to databases specified in environment vari
   }
   ```
 
+- **disconnect_database**: Close and remove a connection by name
+  ```json
+  {
+    "name": "my_db"
+  }
+  ```
+
 - **list_connections**: List all active database connections
 
 ### Query Operations
 
-- **query**: Execute SELECT queries
+- **query**: Execute SELECT queries safely
   ```json
   {
     "sql": "SELECT * FROM users WHERE id = $1",
     "params": ["1"],
-    "database": "primary"
+    "database": "primary_db",
+    "limit": 10,
+    "statement_timeout_ms": 5000
   }
   ```
 
 ### CRUD Operations
 
-- **insert**: Insert new records
+- **insert**: INSERT with validated identifiers
   ```json
   {
     "table": "users",
     "data": {"username": "newuser", "email": "user@example.com"},
-    "database": "primary"
+    "database": "primary_db",
+    "returning": true,
+    "statement_timeout_ms": 5000
   }
   ```
 
-- **update**: Update existing records
+- **update**: UPDATE with validated identifiers and WHERE map
   ```json
   {
     "table": "users", 
     "data": {"email": "newemail@example.com"},
     "where": {"id": 1},
-    "database": "primary"
+    "database": "primary_db",
+    "returning": false,
+    "statement_timeout_ms": 5000
   }
   ```
 
-- **delete**: Delete records
+- **delete**: DELETE with validated identifiers and WHERE map
   ```json
   {
     "table": "users",
     "where": {"id": 1},
-    "database": "primary"
+    "database": "primary_db",
+    "returning": false,
+    "statement_timeout_ms": 5000
   }
   ```
 
 ### Schema Operations
 
-- **list_tables**: List all tables in a database
-- **describe_table**: Get detailed table schema information
+- **list_schemas**: List non-system schemas
+  ```json
+  {
+    "database": "primary_db"
+  }
+  ```
+
+- **list_tables**: List tables under a schema
+  ```json
+  {
+    "database": "primary_db",
+    "schema": "public"
+  }
+  ```
+
+- **describe_table**: Describe columns for a table
+  ```json
+  {
+    "table": "users",
+    "database": "primary_db"
+  }
+  ```
 
 ## Environment Configuration
 
-Create a `.env` file with your database connections:
+Set the `POSTGRESQL_URLS` environment variable with comma-separated database URLs:
 
 ```bash
-# Default connection (used when no database is specified)
-POSTGRESQL_DEFAULT_URL=postgresql://postgres:password123@localhost:5432/primary_db
+# Set environment variable for multiple databases
+export POSTGRESQL_URLS="postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db,postgresql://postgres:password123@localhost:5434/analytics_db"
 
-# Named connections for different services
-POSTGRESQL_PRIMARY_URL=postgresql://postgres:password123@localhost:5432/primary_db
-POSTGRESQL_SECONDARY_URL=postgresql://postgres:password123@localhost:5433/secondary_db
-POSTGRESQL_ANALYTICS_URL=postgresql://postgres:password123@localhost:5434/analytics_db
+# Or run with the variable
+POSTGRESQL_URLS="postgresql://postgres:password123@localhost:5432/primary_db" ./bin/postgresql-mcp
 ```
+
+The server automatically extracts database names from the URLs and creates named connections (e.g., `primary_db`, `secondary_db`, `analytics_db`).
 
 ## Database Architecture Example
 
@@ -143,24 +180,24 @@ The provided Docker Compose setup creates three databases:
 
 Once the MCP server is running, you can use it in Claude Code:
 
-```
+```bash
 # Connect to a database
-connect_database name="my_app" connection_string="postgresql://user:pass@host:port/db"
+mcp__postgresql__connect_database name="my_app" connection_string="postgresql://user:pass@host:port/db"
 
 # Query data
-query sql="SELECT * FROM users LIMIT 5" database="my_app"
+mcp__postgresql__query sql="SELECT * FROM users LIMIT 5" database="my_app"
 
 # Insert data
-insert table="users" data='{"username": "alice", "email": "alice@example.com"}' database="my_app"
+mcp__postgresql__insert table="users" data='{"username": "alice", "email": "alice@example.com"}' database="my_app"
 
 # Update data  
-update table="users" data='{"email": "alice.new@example.com"}' where='{"id": 1}' database="my_app"
+mcp__postgresql__update table="users" data='{"email": "alice.new@example.com"}' where='{"id": 1}' database="my_app"
 
 # List tables
-list_tables database="my_app"
+mcp__postgresql__list_tables database="my_app"
 
 # Describe a table
-describe_table table="users" database="my_app"
+mcp__postgresql__describe_table table="users" database="my_app"
 ```
 
 ## Integration with Claude Code
@@ -171,17 +208,18 @@ To use this MCP server with Claude Code, add it to your MCP configuration:
 {
   "mcpServers": {
     "postgresql": {
-      "command": "python",
-      "args": ["/path/to/mcp/postgresql-mcp/main.py"],
+      "command": "/absolute/path/to/mcp/postgresql-mcp/bin/postgresql-mcp",
       "env": {
-        "POSTGRESQL_DEFAULT_URL": "postgresql://postgres:password123@localhost:5432/primary_db",
-        "POSTGRESQL_PRIMARY_URL": "postgresql://postgres:password123@localhost:5432/primary_db",
-        "POSTGRESQL_SECONDARY_URL": "postgresql://postgres:password123@localhost:5433/secondary_db"
+        "POSTGRESQL_URLS": "postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db"
       }
     }
   }
 }
 ```
+
+Notes:
+- Replace `/absolute/path/to/...` with the actual path on your machine.
+- Alternatively, use `make run` from `mcp/postgresql-mcp` during development.
 
 ## Security Considerations
 
@@ -215,14 +253,16 @@ To contribute or modify the server:
 
 ```bash
 # Install development dependencies
-pip install -r requirements.txt
+make deps
 
 # Run with debug logging
 export MCP_LOG_LEVEL=debug
-python main.py
+make run
+# or
+./bin/postgresql-mcp
 
-# Run tests (if available)
-python -m pytest
+# Run tests
+go test ./...
 ```
 
 ## License
