@@ -2,7 +2,7 @@
 
 build:
 	@mkdir -p bin
-	go build -o bin/postgresql-mcp main.go
+	go build -o bin/postgresql-mcp .
 
 install: build
 	@echo "Built bin/postgresql-mcp binary"
