@@ -1,4 +1,4 @@
-module postgresql-mcp
+module github.com/Ryota-Onuma/ai-agents/mcp/postgresql-mcp
 
 go 1.25
 
