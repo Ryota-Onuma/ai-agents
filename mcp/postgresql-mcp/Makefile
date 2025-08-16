@@ -1,20 +1,19 @@
 .PHONY: build clean install test run deps
 
 build:
-	@mkdir -p bin
-	go build -o bin/postgresql-mcp .
+	go build -o bin .
 
 install: build
-	@echo "Built bin/postgresql-mcp binary"
+	@echo "Built bin binary"
 
 clean:
-	rm -f bin/postgresql-mcp
+	rm -f bin
 
 test:
 	go test ./...
 
 run: build
-	./bin/postgresql-mcp
+	./bin
 
 deps:
 	go mod tidy
