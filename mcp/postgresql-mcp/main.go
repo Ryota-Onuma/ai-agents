@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -336,15 +337,35 @@ func (m *PostgreSQLManager) CloseAll() {
 
 var dbManager = NewPostgreSQLManager()
 
+// extractDatabaseName extracts database name from PostgreSQL connection URL
+func extractDatabaseName(dsn string) string {
+	u, err := url.Parse(dsn)
+	if err != nil {
+		logger.Printf("Failed to parse URL %s: %s", dsn, err)
+		return ""
+	}
+	
+	// Remove leading slash from path to get database name
+	dbName := strings.TrimPrefix(u.Path, "/")
+	if dbName == "" {
+		return "postgres" // default database name
+	}
+	return dbName
+}
+
 // setupDatabaseConnections sets up database connections from environment variables
 func setupDatabaseConnections() {
 	// Support for POSTGRESQL_URLS environment variable (comma-separated)
 	if urlsEnv := os.Getenv("POSTGRESQL_URLS"); urlsEnv != "" {
 		urls := strings.Split(urlsEnv, ",")
-		for i, url := range urls {
+		for _, url := range urls {
 			url = strings.TrimSpace(url)
 			if url != "" {
-				name := fmt.Sprintf("db%d", i+1)
+				name := extractDatabaseName(url)
+				if name == "" {
+					logger.Printf("Failed to extract database name from URL: %s", url)
+					continue
+				}
 				if err := dbManager.AddConnection(name, url); err != nil {
 					logger.Printf("Failed to auto-connect %s: %s", name, err)
 				}

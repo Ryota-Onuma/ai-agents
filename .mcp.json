@@ -5,7 +5,7 @@
       "command": "/Users/ryota/Desktop/programming/ai-agents/mcp/postgresql-mcp/bin",
       "args": [],
       "env": {
-        "POSTGRESQL_URLS": "postgresql://postgres:password123@localhost:5432/primary_db?sslmode=disable,postgresql://postgres:password123@localhost:5433/secondary_db?sslmode=disable,postgresql://postgres:password123@localhost:5434/analytics_db?sslmode=disable"
+        "POSTGRESQL_URLS": "postgresql://postgres:password123@localhost:5432/primary_db?sslmode=disable,postgresql://postgres:password123@localhost:5433/secondary_db?sslmode=disable,postgresql://postgres:password123@localhost:5434/analytics_db?sslmode=disable,postgresql://postgres:password123@localhost:5434/reporting_db?sslmode=disable,postgresql://postgres:password123@localhost:5434/monitoring_db?sslmode=disable,postgresql://postgres:password123@localhost:5434/metrics_db?sslmode=disable"
       }
     }
   }
