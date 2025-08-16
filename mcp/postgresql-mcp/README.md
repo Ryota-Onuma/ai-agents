@@ -52,6 +52,8 @@ make run
 The server supports environment variable for database URLs:
 - `POSTGRESQL_URLS`: Comma-separated list of PostgreSQL connection URLs
 
+All URLs are validated on startup and **must resolve to local hosts only** (`localhost`, `127.0.0.0/8`, `::1`, or allowed Unix sockets). If any URL points to a remote host, the server exits with an error before attempting connection. Existing `.mcp.json` configurations continue to work without modification.
+
 The server will automatically extract database names from the URLs and create named connections.
 
 ## Available Tools
@@ -162,6 +164,8 @@ POSTGRESQL_URLS="postgresql://postgres:password123@localhost:5432/primary_db" ./
 ```
 
 The server automatically extracts database names from the URLs and creates named connections (e.g., `primary_db`, `secondary_db`, `analytics_db`).
+
+> **Note**: Connections forwarded through SSH tunnels to `localhost` cannot be detected by this validation.
 
 ## Database Architecture Example
 

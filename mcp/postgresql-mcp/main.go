@@ -1,7 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	_ "github.com/lib/pq"
+
+	"github.com/Ryota-Onuma/ai-agents/mcp/postgresql-mcp/internal/dbguard"
 )
 
 func main() {
@@ -193,8 +198,27 @@ func main() {
 		"required": []string{"table"},
 	}, describeTableHandler)
 
-	// Auto-connect via environment variables
-	setupDatabaseConnections()
+	// Auto-connect via environment variables with local-only enforcement
+	urls, err := dbguard.LoadPostgresURLsFromEnv()
+	if err != nil {
+		fmt.Println("invalid POSTGRESQL_URLS:", err)
+		os.Exit(1)
+	}
+	dsns, err := dbguard.EnforceLocalForURLs(urls)
+	if err != nil {
+		fmt.Println("database URL rejected:", err)
+		os.Exit(1)
+	}
+	for _, dsn := range dsns {
+		name := extractDatabaseName(dsn)
+		if name == "" {
+			logger.Printf("Failed to extract database name from URL: %s", dbguard.RedactDSN(dsn))
+			continue
+		}
+		if err := dbManager.AddConnection(name, dsn); err != nil {
+			logger.Printf("Failed to auto-connect %s: %v", name, err)
+		}
+	}
 
 	defer dbManager.CloseAll()
 

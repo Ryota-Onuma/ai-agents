@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 )
@@ -108,29 +107,6 @@ func extractDatabaseName(dsn string) string {
 		return "postgres" // default database name
 	}
 	return dbName
-}
-
-// setupDatabaseConnections sets up database connections from environment variables
-func setupDatabaseConnections() {
-	// Support for POSTGRESQL_URLS environment variable (comma-separated)
-	if urlsEnv := os.Getenv("POSTGRESQL_URLS"); urlsEnv != "" {
-		urls := strings.Split(urlsEnv, ",")
-		for _, url := range urls {
-			url = strings.TrimSpace(url)
-			if url != "" {
-				name := extractDatabaseName(url)
-				if name == "" {
-					logger.Printf("Failed to extract database name from URL: %s", url)
-					continue
-				}
-				if err := dbManager.AddConnection(name, url); err != nil {
-					logger.Printf("Failed to auto-connect %s: %s", name, err)
-				}
-			}
-		}
-		return
-	}
-	logger.Println("No DB URLs are passed..")
 }
 
 // Helper function to execute with timeout
