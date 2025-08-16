@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # Primary PostgreSQL database
+  postgres-primary:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: primary_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_primary_data:/var/lib/postgresql/data
+      - ./init-scripts/primary:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Secondary PostgreSQL database  
+  postgres-secondary:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: secondary_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_secondary_data:/var/lib/postgresql/data
+      - ./init-scripts/secondary:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Analytics PostgreSQL database
+  postgres-analytics:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: analytics_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_analytics_data:/var/lib/postgresql/data
+      - ./init-scripts/analytics:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres-primary
+      - postgres-secondary
+      - postgres-analytics
+
+volumes:
+  postgres_primary_data:
+  postgres_secondary_data:
+  postgres_analytics_data:
+  pgadmin_data:
+
+# Example environment configuration
+# Create a .env file with these variables for the MCP server:
+#
+# POSTGRESQL_DEFAULT_URL=postgresql://postgres:password123@localhost:5432/primary_db
+# POSTGRESQL_PRIMARY_URL=postgresql://postgres:password123@localhost:5432/primary_db
+# POSTGRESQL_SECONDARY_URL=postgresql://postgres:password123@localhost:5433/secondary_db
+# POSTGRESQL_ANALYTICS_URL=postgresql://postgres:password123@localhost:5434/analytics_db

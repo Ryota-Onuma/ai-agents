@@ -284,6 +284,8 @@ fi
 
 ### Task tool を使用して 3 エージェントを並列実行
 
+**必ず**以下 3 つのエージェントを使用してください。
+
 1. **claude-reviewer** エージェント
 
    - Claude Code による直接レビュー
@@ -329,7 +331,7 @@ fi
 
 各エージェントには以下の形式でレビューを依頼：
 
-**重要**: 具体的な問題を発見した場合は、必ず **ファイル名:行番号** を明記してください。
+**重要**: 🚨 Blocking（必須修正）と 💡 Should Fix（推奨修正）の指摘は、**例外を除き必ずインラインコメントで投稿**します。具体的な問題を発見した場合は、必ず **ファイル名:行番号** を明記してください。
 
 **レビューフォーマット要求**（日英併記必須）：
 
@@ -359,6 +361,13 @@ fi
 [Insights about architecture, design philosophy, and overall structure]
 ```
 
+**インラインコメント投稿ルール**:
+
+- 🚨 Blocking（必須修正）: **必ず**インラインコメントで投稿
+- 💡 Should Fix（推奨修正）: **必ず**インラインコメントで投稿
+- 🔧 Nits（任意改善）: インラインコメントで投稿（推奨）
+- 全体的所見: 統合レビューコメントでのみ投稿
+
 ---
 
 ## フェーズ 3: レビュー結果統合
@@ -380,6 +389,10 @@ fi
   - **Nits（任意改善）**: スタイル、微細最適化
   - **Open Questions（確認事項）**: 追加情報が必要な項目
 
+**注意事項**
+
+- 本質的なレビューになっているか、次ステップに行く前に、think harder で見直すこと。
+
 ### 3-3. 統合レビューコメント作成
 
 #### 3-3-1. インラインコメント対象の特定
@@ -399,8 +412,6 @@ grep -n "content/posts/.*.md:[0-9]*" /tmp/gemini_review.md > /tmp/gemini_inline_
 
 #### 3-3-3. 統合サマリーレビュー作成
 
-（略：元テンプレートの方針に準拠）
-
 ---
 
 ## フェーズ 4: GitHub レビュー投稿
@@ -409,13 +420,15 @@ grep -n "content/posts/.*.md:[0-9]*" /tmp/gemini_review.md > /tmp/gemini_inline_
 
 - **具体的指摘の分類**:
 
-  - インラインコメント対象: ファイル・行番号が特定できる問題
-  - 全体コメント対象: 全般的な改善点、アーキテクチャレベルの問題
+  - **インラインコメント対象（必須）**: 🚨 Blocking（必須修正）、💡 Should Fix（推奨修正）の具体的指摘
+  - **インラインコメント対象（推奨）**: 🔧 Nits（任意改善）の具体的指摘
+  - **全体コメント対象**: 全般的な改善点、アーキテクチャレベルの問題、エージェント個別所見
 
 - **投稿戦略**:
 
-  - **Blocking/Should Fix あり** → インラインコメント + `--request-changes` レビュー
-  - **Nits のみ** → インラインコメント + 通常コメント
+  - **🚨 Blocking（必須修正）あり** → **必ず**インラインコメント + `--request-changes` レビュー
+  - **💡 Should Fix（推奨修正）のみ** → **必ず**インラインコメント + 通常コメント
+  - **🔧 Nits（任意改善）のみ** → インラインコメント + 通常コメント
   - **全体的指摘のみ** → 統合レビューコメントのみ
 
 ### 4-2. インラインコメントの作成（例）
@@ -571,7 +584,7 @@ claude pr-review-by-ai-team-parallel 123 --repo owner/repo
 - **事実と推測の区別**: 差分データに基づく事実と推論を明確に分離
 - **具体性**: 抽象的でなく、具体的で検証可能な指摘（ファイル名:行番号付き）
 - **優先度の妥当性**: ビジネス影響度に応じた適切な分類
-- **インラインコメント活用**: 具体的問題はインライン、全体的問題は統合コメント
+- **インラインコメント活用**: 🚨 Blocking（必須修正）と 💡 Should Fix（推奨修正）は**必ず**インラインコメントで投稿、全体的問題は統合コメント
 - **修正提案の具体性**: 単なる指摘ではなく、実装可能な修正案を提示
 - **投稿完了まで**: 分析から GitHub への詳細投稿・確認まで実行
 
@@ -579,8 +592,9 @@ claude pr-review-by-ai-team-parallel 123 --repo owner/repo
 
 ✅ **成功例 / Success Example**:
 
-- インラインコメント / Inline comments: 5-15 件（具体的な問題指摘 / specific issue reports）
+- インラインコメント / Inline comments: 5-15 件（🚨 Blocking と 💡 Should Fix の指摘は**必ず**インラインコメント / 🚨 Blocking and 💡 Should Fix issues **must** be inline comments）
 - 統合レビュー / Integrated review: 1 件（全体サマリー / overall summary）
 - レビューステータス / Review status: Change Requested または Approved
 - 各指摘に修正提案コードを含む / Each comment includes suggested fix code
 - **すべてのコメントで日英併記を実施 / All comments must include both Japanese and English**
+- **🚨 Blocking（必須修正）と 💡 Should Fix（推奨修正）の指摘は例外なくインラインコメントで投稿 / 🚨 Blocking and 💡 Should Fix issues must be posted as inline comments without exception**
