@@ -23,7 +23,7 @@ func ValidateConnection(dsn string) error {
 	if strings.Contains(dsn, "/cloudsql/") {
 		return &CloudSQLProxyError{
 			DSN:    dsn,
-			Reason: "detected Cloud SQL Unix socket path",
+			Reason: "detected Cloud SQL Unix socket path (/cloudsql/…)",
 		}
 	}
 
@@ -40,6 +40,17 @@ func ValidateConnection(dsn string) error {
 		}
 		// If we can't parse it and it's not a GCP pattern, let the original connection attempt handle it
 		return nil
+	}
+
+	if hs := u.Query()["host"]; len(hs) > 0 {
+		for _, h := range hs {
+			if strings.HasPrefix(h, "/cloudsql/") {
+				return &CloudSQLProxyError{
+					DSN:    dsn,
+					Reason: "detected Cloud SQL Unix socket path in ?host",
+				}
+			}
+		}
 	}
 
 	// Check for Cloud SQL Proxy indicators
@@ -61,13 +72,6 @@ func detectCloudSQLProxy(u *url.URL, originalDSN string) string {
 			if _, hasInstance := params["instance"]; hasInstance {
 				return "detected 'instance' parameter (common in Cloud SQL connections)"
 			}
-			if _, hasSocket := params["host"]; hasSocket {
-				for _, socketPath := range params["host"] {
-					if strings.Contains(socketPath, "/cloudsql/") {
-						return "detected Cloud SQL Unix socket path"
-					}
-				}
-			}
 		}
 	}
 
@@ -78,7 +82,7 @@ func detectCloudSQLProxy(u *url.URL, originalDSN string) string {
 		if colonIdx := strings.LastIndex(host, ":"); colonIdx != -1 {
 			port := host[colonIdx+1:]
 			hostPart := host[:colonIdx]
-			
+
 			// Check for common Cloud SQL Proxy ports
 			if isCloudSQLProxyPort(port) && (hostPart == "127.0.0.1" || hostPart == "localhost") {
 				return fmt.Sprintf("detected localhost connection on Cloud SQL Proxy port %s", port)
