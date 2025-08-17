@@ -76,10 +76,3 @@ volumes:
   postgres_analytics_data:
   pgadmin_data:
 
-# Example environment configuration
-# Create a .env file with these variables for the MCP server:
-#
-# POSTGRESQL_DEFAULT_URL=postgresql://postgres:password123@localhost:5432/primary_db
-# POSTGRESQL_PRIMARY_URL=postgresql://postgres:password123@localhost:5432/primary_db
-# POSTGRESQL_SECONDARY_URL=postgresql://postgres:password123@localhost:5433/secondary_db
-# POSTGRESQL_ANALYTICS_URL=postgresql://postgres:password123@localhost:5434/analytics_db
