@@ -59,10 +59,10 @@ func TestValidateConnection(t *testing.T) {
 			errorText:   "detected 'instance' parameter",
 		},
 		{
-			name:        "Cloud SQL with host parameter pointing to cloudsql",
-			dsn:         "postgresql://user:pass@localhost:5432/mydb?host=/cloudsql/my-project:us-central1:my-instance",
+			name:        "Cloud SQL with encoded host parameter pointing to cloudsql",
+			dsn:         "postgresql://user:pass@localhost:5432/mydb?host=%2Fcloudsql%2Fmy-project:us-central1:my-instance",
 			shouldError: true,
-			errorText:   "detected Cloud SQL Unix socket path",
+			errorText:   "detected Cloud SQL Unix socket path in ?host",
 		},
 		{
 			name:        "Regular localhost connection on standard port",
@@ -79,13 +79,13 @@ func TestValidateConnection(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := ValidateConnection(tt.dsn)
-			
+
 			if tt.shouldError {
 				if err == nil {
 					t.Errorf("Expected error for DSN %s, but got none", tt.dsn)
 					return
 				}
-				
+
 				// Check if it's the right type of error
 				if cloudErr, ok := err.(*CloudSQLProxyError); ok {
 					if !strings.Contains(cloudErr.Reason, tt.errorText) {
@@ -121,9 +121,9 @@ func TestDetectCloudSQLProxy(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			err := ValidateConnection(tt.dsn)
 			hasError := err != nil
-			
+
 			if hasError != tt.expectError {
-				t.Errorf("DSN %s: expected error=%v, got error=%v (err: %v)", 
+				t.Errorf("DSN %s: expected error=%v, got error=%v (err: %v)",
 					tt.dsn, tt.expectError, hasError, err)
 			}
 		})

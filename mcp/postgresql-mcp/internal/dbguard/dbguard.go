@@ -34,7 +34,6 @@ func LoadPostgresURLsFromArgs(urlString string) ([]string, error) {
 	return out, nil
 }
 
-
 // EnforceLocalForURLs validates URLs are local and returns the original DSNs
 func EnforceLocalForURLs(urls []string) ([]string, error) {
 	out := make([]string, 0, len(urls))
@@ -54,6 +53,9 @@ func EnforceLocalForURLs(urls []string) ([]string, error) {
 func validateLocalURL(u *url.URL) error {
 	if hosts := u.Query()["host"]; len(hosts) > 0 {
 		for _, h := range hosts {
+			if strings.HasPrefix(h, "/cloudsql/") {
+				return fmt.Errorf("%w: cloud sql unix socket is forbidden: %q", errRemote, h)
+			}
 			if !strings.HasPrefix(h, "/") || !isUnderAllowedSocketRoots(h) {
 				return fmt.Errorf("%w: unix socket outside allowed roots: %q", errRemote, h)
 			}
@@ -77,6 +79,9 @@ func validateLocalURL(u *url.URL) error {
 		h = strings.Trim(h, "[]")
 
 		if strings.HasPrefix(h, "/") {
+			if strings.HasPrefix(h, "/cloudsql/") {
+				return fmt.Errorf("%w: cloud sql unix socket is forbidden: %q", errRemote, h)
+			}
 			if !isUnderAllowedSocketRoots(h) {
 				return fmt.Errorf("%w: unix socket outside allowed roots: %q", errRemote, h)
 			}

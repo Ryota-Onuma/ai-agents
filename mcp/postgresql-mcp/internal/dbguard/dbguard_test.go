@@ -20,14 +20,13 @@ func TestLoadPostgresURLsFromArgs(t *testing.T) {
 	if len(urls) != 2 {
 		t.Fatalf("expected 2 urls, got %d", len(urls))
 	}
-	
+
 	// Test empty string
 	_, err = LoadPostgresURLsFromArgs("")
 	if err == nil {
 		t.Fatalf("expected error for empty string")
 	}
 }
-
 
 func TestEnforceLocalForURLsAllow(t *testing.T) {
 	dsns := []string{"postgresql://u:p@localhost:5432/db?sslmode=disable", "postgresql://u:p@[::1]:5432/db"}
@@ -51,6 +50,20 @@ func TestEnforceLocalForURLsRejectMixed(t *testing.T) {
 	dsns := []string{"postgresql://u:p@localhost,10.0.0.5:5432/db"}
 	if _, err := EnforceLocalForURLs(dsns); err == nil {
 		t.Fatalf("expected error for mixed hosts")
+	}
+}
+
+func TestEnforceLocalForURLsRejectCloudSQLSocket(t *testing.T) {
+	dsns := []string{"postgresql://u:p@localhost:5432/db?host=/cloudsql/proj:reg:inst"}
+	if _, err := EnforceLocalForURLs(dsns); err == nil {
+		t.Fatalf("expected error for cloud sql unix socket")
+	}
+}
+
+func TestEnforceLocalForURLsRejectCloudSQLHost(t *testing.T) {
+	dsns := []string{"postgresql://u:p@/cloudsql/proj:reg:inst/db"}
+	if _, err := EnforceLocalForURLs(dsns); err == nil {
+		t.Fatalf("expected error for cloud sql unix socket host path")
 	}
 }
 
