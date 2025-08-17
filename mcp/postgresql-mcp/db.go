@@ -7,6 +7,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Ryota-Onuma/ai-agents/mcp/postgresql-mcp/internal/cloudguard"
 )
 
 // Connection manager
@@ -23,6 +25,12 @@ func NewPostgreSQLManager() *PostgreSQLManager {
 }
 
 func (m *PostgreSQLManager) AddConnection(name, dsn string) error {
+	// Validate connection against Cloud SQL Proxy
+	if err := cloudguard.ValidateConnection(dsn); err != nil {
+		logger.Printf("Connection rejected for %s: %s", name, err)
+		return fmt.Errorf("connection rejected: %w", err)
+	}
+
 	// Close existing connection if re-adding
 	if db, exists := m.connections[name]; exists {
 		db.Close()
