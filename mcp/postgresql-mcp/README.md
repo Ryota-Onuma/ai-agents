@@ -40,19 +40,19 @@ docker-compose ps
 ### 3. Run the MCP Server
 
 ```bash
-# Run the server directly
-make run
+# Run with your database URLs
+./bin/postgresql-mcp-server "postgresql://user:pass@localhost:5432/your_db"
 
-# Or run the built binary
-./bin/postgresql-mcp
+# Or see usage help
+make run
 ```
 
 ### 4. Test the Connection
 
-The server supports environment variable for database URLs:
-- `POSTGRESQL_URLS`: Comma-separated list of PostgreSQL connection URLs
+The server requires database URLs to be provided as a command line argument:
+- First argument: Comma-separated list of PostgreSQL connection URLs
 
-All URLs are validated on startup and **must resolve to local hosts only** (`localhost`, `127.0.0.0/8`, `::1`, or allowed Unix sockets). If any URL points to a remote host, the server exits with an error before attempting connection. Existing `.mcp.json` configurations continue to work without modification.
+All URLs are validated on startup and **must resolve to local hosts only** (`localhost`, `127.0.0.0/8`, `::1`, or allowed Unix sockets). If any URL points to a remote host, the server exits with an error before attempting connection.
 
 The server will automatically extract database names from the URLs and create named connections.
 
@@ -151,16 +151,16 @@ The server will automatically extract database names from the URLs and create na
   }
   ```
 
-## Environment Configuration
+## Command Line Configuration
 
-Set the `POSTGRESQL_URLS` environment variable with comma-separated database URLs:
+Provide database URLs as a command line argument:
 
 ```bash
-# Set environment variable for multiple databases
-export POSTGRESQL_URLS="postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db,postgresql://postgres:password123@localhost:5434/analytics_db"
+# Run with multiple databases
+./bin/postgresql-mcp-server "postgresql://user:pass@localhost:5432/db1,postgresql://user:pass@localhost:5433/db2"
 
-# Or run with the variable
-POSTGRESQL_URLS="postgresql://postgres:password123@localhost:5432/primary_db" ./bin/postgresql-mcp
+# Run with single database
+./bin/postgresql-mcp-server "postgresql://user:pass@localhost:5432/mydb"
 ```
 
 The server automatically extracts database names from the URLs and creates named connections (e.g., `primary_db`, `secondary_db`, `analytics_db`).
@@ -212,18 +212,76 @@ To use this MCP server with Claude Code, add it to your MCP configuration:
 {
   "mcpServers": {
     "postgresql": {
-      "command": "/absolute/path/to/mcp/postgresql-mcp/bin/postgresql-mcp",
-      "env": {
-        "POSTGRESQL_URLS": "postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db"
-      }
+      "type": "stdio",
+      "command": "mcp/postgresql-mcp/bin/postgresql-mcp-server",
+      "args": [
+        "postgresql://your_user:your_password@localhost:5432/your_database"
+      ]
+    }
+  }
+}
+```
+
+For multiple databases:
+```json
+{
+  "mcpServers": {
+    "postgresql": {
+      "type": "stdio",
+      "command": "mcp/postgresql-mcp/bin/postgresql-mcp-server",
+      "args": [
+        "postgresql://user:pass@localhost:5432/db1,postgresql://user:pass@localhost:5433/db2,postgresql://user:pass@localhost:5434/db3"
+      ]
+    }
+  }
+}
+```
+
+### Configuration Examples
+
+**Single Database:**
+```json
+{
+  "mcpServers": {
+    "postgresql": {
+      "type": "stdio",
+      "command": "mcp/postgresql-mcp/bin/postgresql-mcp-server",
+      "args": ["postgresql://myuser:mypass@localhost:5432/myapp"]
+    }
+  }
+}
+```
+
+**Multiple Databases (Development):**
+```json
+{
+  "mcpServers": {
+    "postgresql": {
+      "type": "stdio",
+      "command": "mcp/postgresql-mcp/bin/postgresql-mcp-server",
+      "args": ["postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db"]
+    }
+  }
+}
+```
+
+**Docker Compose Setup (as provided in this repo):**
+```json
+{
+  "mcpServers": {
+    "postgresql": {
+      "type": "stdio",
+      "command": "mcp/postgresql-mcp/bin/postgresql-mcp-server",
+      "args": ["postgresql://postgres:password123@localhost:5432/primary_db,postgresql://postgres:password123@localhost:5433/secondary_db,postgresql://postgres:password123@localhost:5434/analytics_db"]
     }
   }
 }
 ```
 
 Notes:
-- Replace `/absolute/path/to/...` with the actual path on your machine.
-- Alternatively, use `make run` from `mcp/postgresql-mcp` during development.
+- Replace connection strings with your actual database credentials
+- Use relative paths from the project directory or absolute paths as needed
+- The server automatically extracts database names from URLs for connection naming
 
 ## Security Considerations
 
@@ -261,9 +319,7 @@ make deps
 
 # Run with debug logging
 export MCP_LOG_LEVEL=debug
-make run
-# or
-./bin/postgresql-mcp
+./bin/postgresql-mcp-server "postgresql://user:pass@localhost:5432/your_db"
 
 # Run tests
 go test ./...

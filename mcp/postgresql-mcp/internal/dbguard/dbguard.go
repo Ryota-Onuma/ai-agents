@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"net/url"
-	"os"
 	"path/filepath"
 	"strings"
 )
@@ -15,11 +14,11 @@ var (
 	errRemote          = errors.New("remote database is not allowed (local only)")
 )
 
-// LoadPostgresURLsFromEnv loads comma-separated PostgreSQL URLs from environment variable
-func LoadPostgresURLsFromEnv() ([]string, error) {
-	s := strings.TrimSpace(os.Getenv("POSTGRESQL_URLS"))
+// LoadPostgresURLsFromArgs loads comma-separated PostgreSQL URLs from command line argument
+func LoadPostgresURLsFromArgs(urlString string) ([]string, error) {
+	s := strings.TrimSpace(urlString)
 	if s == "" {
-		return nil, errors.New("POSTGRESQL_URLS not set")
+		return nil, errors.New("no URLs provided")
 	}
 	items := splitCommaRespectingEscape(s)
 	out := make([]string, 0, len(items))
@@ -30,10 +29,11 @@ func LoadPostgresURLsFromEnv() ([]string, error) {
 		}
 	}
 	if len(out) == 0 {
-		return nil, errors.New("POSTGRESQL_URLS contains no usable URL")
+		return nil, errors.New("no usable URLs found")
 	}
 	return out, nil
 }
+
 
 // EnforceLocalForURLs validates URLs are local and returns the original DSNs
 func EnforceLocalForURLs(urls []string) ([]string, error) {

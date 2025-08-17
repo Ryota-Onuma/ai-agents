@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -10,6 +11,14 @@ import (
 )
 
 func main() {
+	flag.Parse()
+
+	// Get DSN string from command line arguments
+	var dbURLs string
+	if len(flag.Args()) > 0 {
+		dbURLs = flag.Args()[0]
+	}
+
 	server := NewMCPServer("postgresql-mcp", "1.0.0")
 
 	// Register tools
@@ -198,10 +207,18 @@ func main() {
 		"required": []string{"table"},
 	}, describeTableHandler)
 
-	// Auto-connect via environment variables with local-only enforcement
-	urls, err := dbguard.LoadPostgresURLsFromEnv()
+	// Auto-connect via command line arguments with local-only enforcement
+	var urls []string
+	var err error
+
+	if dbURLs == "" {
+		fmt.Println("no database URLs provided: pass DSN string as argument")
+		os.Exit(1)
+	}
+
+	urls, err = dbguard.LoadPostgresURLsFromArgs(dbURLs)
 	if err != nil {
-		fmt.Println("invalid POSTGRESQL_URLS:", err)
+		fmt.Println("invalid database URLs:", err)
 		os.Exit(1)
 	}
 	dsns, err := dbguard.EnforceLocalForURLs(urls)

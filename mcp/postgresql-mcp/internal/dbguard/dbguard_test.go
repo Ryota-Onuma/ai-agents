@@ -1,7 +1,6 @@
 package dbguard
 
 import (
-	"os"
 	"testing"
 )
 
@@ -12,16 +11,23 @@ func TestSplitCommaRespectingEscape(t *testing.T) {
 	}
 }
 
-func TestLoadPostgresURLsFromEnv(t *testing.T) {
-	os.Setenv("POSTGRESQL_URLS", "postgres://u:p@localhost/db1,postgres://u:p@localhost/db2")
-	urls, err := LoadPostgresURLsFromEnv()
+func TestLoadPostgresURLsFromArgs(t *testing.T) {
+	urlString := "postgres://u:p@localhost/db1,postgres://u:p@localhost/db2"
+	urls, err := LoadPostgresURLsFromArgs(urlString)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(urls) != 2 {
 		t.Fatalf("expected 2 urls, got %d", len(urls))
 	}
+	
+	// Test empty string
+	_, err = LoadPostgresURLsFromArgs("")
+	if err == nil {
+		t.Fatalf("expected error for empty string")
+	}
 }
+
 
 func TestEnforceLocalForURLsAllow(t *testing.T) {
 	dsns := []string{"postgresql://u:p@localhost:5432/db?sslmode=disable", "postgresql://u:p@[::1]:5432/db"}
